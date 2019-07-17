@@ -31,14 +31,14 @@ class BarChart extends React.Component {
 	}
 
 	componentDidUpdate (){
-		this.createArc();
+		this.createBar();
 	}
 
 	componentDidMount (){
-		this.createArc();
+		this.createBar();
 	}
 
-	createArc () {
+	createBar () {
 	
 		const data = {
 			"Revised" : {
@@ -89,7 +89,6 @@ var x0 = d3.scaleBand()
 var x1 = d3.scaleBand()
   .padding(0.05);
 
-  console.log(height)
 var y = d3.scaleLinear()
   .rangeRound([height, 0]);
 

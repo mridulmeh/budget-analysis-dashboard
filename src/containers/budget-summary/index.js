@@ -1,7 +1,7 @@
 import React from 'react';
 import { dataLoader } from '../../utils';
 import './budget-summary.css';
-import { BarChart } from '../../components';
+import { BarChart, BubbleChart } from '../../components';
 
 
 class BudgetSummary extends React.Component {
@@ -40,6 +40,7 @@ class BudgetSummary extends React.Component {
 		return (
 			<div className = "budget-summary budget-analysis-section">
 				<BarChart></BarChart>
+				<BubbleChart></BubbleChart>
 			</div>
 		);
 	}
