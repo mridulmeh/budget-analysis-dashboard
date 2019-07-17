@@ -1,4 +1,5 @@
 import React from 'react';
+import './top-bottom.css';
 
 class TopBottom extends React.Component {
 	
@@ -6,7 +7,7 @@ class TopBottom extends React.Component {
 
 		return (
 			<div className = "budget-top-bottom budget-analysis-section">
-			 
+			 <div className = "budget-card"></div>
 			</div>
 		);
 	}

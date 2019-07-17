@@ -35,16 +35,33 @@ class BubbleChart extends React.Component {
 				name: "Public Works Other",
 				children: [{
 					name: 'Non',
-					size: 100
+					size: 300
 				}, {
 					name: 'Second Non',
-					size: 170
+					size: 10
+				},{
+					name: 'as Non',
+					size: 670
+				},{
+					name: 'cvd Non',
+					size: 710
+				}]
+			},{
+				name: "Public Worksac",
+				children: [{
+					name: 'Essenhtrtial',
+					size: 500
+				}, {
+					name: 'df Ess',
+					size: 370
 				}]
 			}]
 
 		};
 
-		var diameter = 960,
+
+
+		var diameter = 960/2,
 		format = d3.format(",d"),
 		color = d3.scaleOrdinal(d3.schemeAccent);
 	
@@ -105,7 +122,7 @@ class BubbleChart extends React.Component {
 	render () {
 
 		return (
-			<svg ref = {node => this.node = node} height = {500} width = {500}>
+			<svg ref = {node => this.node = node} height = {"100%"} width = {"100%"}>
 			</svg>
 		);
 	}

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import './App.css';
-import { BudgetSummary } from './containers';
+import { DashboardContainer } from './containers';
 
 function App () {
 	return (
 		<div className="App">
-			<BudgetSummary></BudgetSummary>
+			<DashboardContainer></DashboardContainer>
 		</div>
 	);
 }

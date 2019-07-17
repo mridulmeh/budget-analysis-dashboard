@@ -1,4 +1,6 @@
 import React from 'react';
+import './budget-dist.css';
+import { BubbleChart } from '../../components';
 
 class BudgetDistribution extends React.Component {
 
@@ -6,7 +8,9 @@ class BudgetDistribution extends React.Component {
 
 		return (
 			<div className = "budget-distribution budget-analysis-section">
-			 
+                <div className = "budget-card">
+                    <BubbleChart></BubbleChart>
+                </div>
 			</div>
 		);
 	}

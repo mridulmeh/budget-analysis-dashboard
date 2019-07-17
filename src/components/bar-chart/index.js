@@ -76,7 +76,7 @@ class BarChart extends React.Component {
   margin = {top: 20, right: 20, bottom: 30, left: 40},
   width =300,
   // +svg.attr("width") - margin.left - margin.right,
-  height = 400,
+  height = 250,
   //+svg.attr("height") - margin.top - margin.bottom,
   g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -141,7 +141,7 @@ var z = d3.scaleOrdinal()
 	render () {
 
 		return (
-			<svg ref = {node => this.node = node} height = {500} width = {500}>
+			<svg ref = {node => this.node = node} height = {"90%"} width = {"100%"}>
 			</svg>
 		);
 	}

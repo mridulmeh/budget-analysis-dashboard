@@ -1,0 +1,26 @@
+.budget-analysis-container{
+   height: 100vh;
+   
+}
+
+.budget-analysis-section{
+    border: 1px solid white;
+
+    float: left;
+    width: 100%;
+}
+
+.budget-analysis-section-left{
+    float: left;
+    height: 85%;
+    float: left;
+    width:50%;
+}
+
+.budget-card {
+    height: calc(100% - 12px);
+    width: calc(100% - 12px);
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 5px;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}

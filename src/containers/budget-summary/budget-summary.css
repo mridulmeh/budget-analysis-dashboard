@@ -1,5 +1,9 @@
-input.search-button {
-    border-radius: 2px;
-    border: 1px solid rgba(0,0,0,0.5);
-    padding: 5px;
+.budget-summary.budget-analysis-section{
+    height: calc(10% - 2px);
+}
+.budget-summary .budget-card {
+    width: calc(25% - 12px);
+
+    float: left;
+
 }
