@@ -2,3 +2,7 @@
     width:calc(50% - 2px);
     height: calc(85% - 2px);
 } 
+
+.budget-distribution text{
+    font-size: 10px;
+}

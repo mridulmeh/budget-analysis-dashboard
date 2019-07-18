@@ -1,9 +1,17 @@
 .budget-summary.budget-analysis-section{
     height: calc(10% - 2px);
 }
-.budget-summary .budget-card {
+.budget-summary .budget-summary-card-section {
     width: calc(25% - 12px);
-
+    height: calc(100% - 12px);
     float: left;
+    margin: 5px;
 
+}
+
+.budget-summary-card-section-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }

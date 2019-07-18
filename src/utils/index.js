@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
-import BudgetSummaryStatement from './cleaned-data/Budget Summary Statement.csv'
-import CapitalExpenditure from './cleaned-data/Capital Expenditure.csv'
-import CapitalReceipts from './cleaned-data/Capital Receipts.csv'
-import RevenueExpenditure from './cleaned-data/Revenue Receipts.csv'
+import BudgetSummaryStatement from './cleaned-data/Budget Summary Statement.csv';
+import CapitalExpenditure from './cleaned-data/Capital Expenditure.csv';
+import CapitalReceipts from './cleaned-data/Capital Receipts.csv';
+import RevenueExpenditure from './cleaned-data/Revenue Receipts.csv';
 import RevenueReceipts from './cleaned-data/Capital Receipts.csv';
 
 const datasets = [{
@@ -20,22 +20,22 @@ const datasets = [{
 },{
 	name: 'RevenueReceipts',
 	data: RevenueReceipts
-}]
+}];
 
 const csvReader = (resolve, reject, dataset) => {
-	return d3.csv(dataset.data).then((res)=>{
-		resolve({[dataset.name]: res})
-	})
-}
+	return d3.csv(dataset.data).then((res) => {
+		resolve({ [dataset.name]: res });
+	});
+};
 
 export const dataLoader = () => {
 	const allPromises = [];
-	datasets.forEach(dataset=>{
-		const promise = new Promise(function(resolve, reject){
+	datasets.forEach(dataset => {
+		const promise = new Promise(function (resolve, reject){
 			return csvReader(resolve, reject, dataset);
-		})
-		allPromises.push(promise)
-	})
-	
+		});
+		allPromises.push(promise);
+	});
+
 	return Promise.all(allPromises);
 };

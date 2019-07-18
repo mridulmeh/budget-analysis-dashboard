@@ -17,7 +17,7 @@
     width:50%;
 }
 
-.budget-card {
+.budget-card, .budget-card-section {
     height: calc(100% - 12px);
     width: calc(100% - 12px);
     border: 1px solid rgba(0,0,0,0.1);
