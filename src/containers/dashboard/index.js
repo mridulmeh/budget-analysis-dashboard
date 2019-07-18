@@ -6,7 +6,7 @@ import BudgetYOY from '../budget-yoy';
 import BudgetDistribution from '../budget-dist';
 import TopBottom from '../top-bottom';
 import Header from '../header';
-import { getBudgetYOYDataData, getBudgetDistData } from './helper';
+import { getBudgetYOYDataData, getBudgetDistData, getBudgetSummaryData } from './data-loader';
 
 class DashboardContainer extends React.Component {
 	constructor () {
@@ -16,7 +16,9 @@ class DashboardContainer extends React.Component {
 			dataPresent: false,
 			views: {
 				budgetYoy: 'BudgetSummaryStatement',
-				budgetDist: 'CapitalExpenditure'
+				budgetDist: 'CapitalExpenditure',
+				budgetBreakdown: ''
+
 			}
 
 		};
@@ -52,10 +54,12 @@ class DashboardContainer extends React.Component {
 
 		const budgetDistData = getBudgetDistData(views.budgetDist, this.data);
 
+		const budgetSummData = getBudgetSummaryData(this.data['BudgetSummaryStatement']);
+
 		return (
 			<div className = "budget-analysis-container">
 				<Header></Header>
-				<BudgetSummary></BudgetSummary>
+				<BudgetSummary dataset = {budgetSummData}></BudgetSummary>
 				<div className = "budget-analysis-section-left">
 					<BudgetYOY dataset = {budgetYOYData}></BudgetYOY>
 					<TopBottom></TopBottom>

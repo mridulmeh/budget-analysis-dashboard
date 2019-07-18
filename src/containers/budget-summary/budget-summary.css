@@ -15,3 +15,16 @@
     justify-content: center;
     cursor: pointer;
 }
+
+.summary-value{
+    font-weight: bold;
+}
+
+.summary-section{
+    width: calc(33% - 2px);
+    border-right: 1px solid;
+}
+
+.summary-section:nth-child(3){
+    border-right: 0px solid;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import './budget-yoy.css';
 import { BarChart, Card } from '../../components';
+import { separateDataKeys } from '../../utils';
 
 class BudgetYOY extends React.Component {
 	constructor (props) {
@@ -39,26 +40,19 @@ class BudgetYOY extends React.Component {
 		} = this.state;
 
 		const currData = mappedData[view];
-		const barData = {};
+		let barData = {};
 
 		if(dataPresent){
-			Object.keys(currData).forEach(key => {
-				const splitKey = key.trim().split(' ');
-				const yearKey = splitKey.shift();
-
-				if(splitKey.length > 0) {
-					const joinedKey = splitKey.join(' ').trim();
-					// barData[joinedKey] = barData[joinedKey] || {};
-					// barData[joinedKey][yearKey] = currData[key];
-					barData[yearKey] = barData[yearKey] || {};
-					barData[yearKey][joinedKey] = currData[key];
-				}
-			});
+			barData = separateDataKeys(currData);
 		}
+
+		const sequence = ['Budget Estimates', 'Revised Estimates', 'Actuals'];
 
 		return (
 			<div className = "budget-yoy budget-analysis-section">
-				<Card body = {(<BarChart data = {barData}></BarChart>)} classPrefix = "budget">
+				<Card header= "Year on Year"
+					body = {(<BarChart data = {barData} sequence = {sequence}></BarChart>)}
+					classPrefix = "budget">
 				</Card>
 			</div>
 		);

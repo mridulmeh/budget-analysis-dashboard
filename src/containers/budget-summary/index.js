@@ -1,14 +1,44 @@
 import React from 'react';
 import './budget-summary.css';
 import { Card } from '../../components';
+import { numberToMoney } from '../../utils';
 
 class BudgetSummary extends React.Component {
 
 	render () {
+		const {
+			dataset
+		} = this.props;
+		let data = [];
 
-		const cardHtml = ['Capital Expenditure','Revenue Expenditure', 'Capital Receipts','Revenue Receipts'].map(e => {
+		dataset.forEach(d => {
+			const obj = {
+				name: d.name,
+				values: {}
+			};
+
+			Object.keys(d.values).forEach(value => {
+				Object.keys(d.values[value]).forEach(type => {
+					obj.values[type] = obj.values[type] || 0;
+					obj.values[type] += +d.values[value][type];
+				});
+			});
+			data.push(obj);
+		});
+
+		const bodyHtml = (datapoint) => (<div className = "summary-section" key = {datapoint[0]}>
+			<div className = "summary-name">{datapoint[0]} </div>
+			<div className = "summary-value">Rs. {numberToMoney(datapoint[1].toFixed(2))}</div>
+		</div>);
+		const bodyHtmlMaker = (datapoints) => Object.entries(datapoints).map(e => bodyHtml(e));
+
+		const cardHtml = data.map(e => {
 			return (
-				<Card body = {e} classPrefix = 'budget-summary'></Card>
+				<Card
+				 header = {e.name}
+				 body = {bodyHtmlMaker(e.values)}
+				 classPrefix = 'budget-summary'
+				 key = {e.name}></Card>
 			);
 		});
 

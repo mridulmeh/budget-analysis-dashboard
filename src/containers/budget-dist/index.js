@@ -24,7 +24,7 @@ class BudgetDistribution extends React.Component {
 
 		return (
 			<div className = "budget-distribution budget-analysis-section">
-				<Card body = {
+				<Card header= "Budget Distribution" body = {
 					(<BubbleChart data = {nestedData} size = {size} nameKey = {name}>
 
 					</BubbleChart>)} classPrefix = 'budget' ></Card>

@@ -39,3 +39,34 @@ export const dataLoader = () => {
 
 	return Promise.all(allPromises);
 };
+
+export const separateDataKeys = (data) => {
+	const barData = [];
+	Object.keys(data).forEach(key => {
+		const splitKey = key.trim().split(' ');
+		const yearKey = splitKey.shift();
+
+		if(splitKey.length > 0) {
+			const joinedKey = splitKey.join(' ').trim();
+			barData[yearKey] = barData[yearKey] || {};
+			barData[yearKey][joinedKey] = data[key];
+		}
+	});
+	return barData;
+};
+
+export const numberToMoney = (originalString, breakPointer = 2) => {
+	const splitString = originalString.split('.');
+	const str = splitString[0];
+
+	const stringLength = str.length;
+
+	let returnedStr = str.slice(stringLength - 3, stringLength);
+
+	for(let i = stringLength - 4; i >= 0; i = i - breakPointer){
+		returnedStr = (str[i - 1] || '') + str[i] + ',' + returnedStr;
+	}
+	console.log(returnedStr, splitString);
+	return returnedStr + (splitString[1] ? `.${splitString[1]}` : '');
+
+};

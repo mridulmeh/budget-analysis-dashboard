@@ -8,7 +8,7 @@ class TopBottom extends React.Component {
 
 		return (
 			<div className = "budget-top-bottom budget-analysis-section">
-			 	<Card classPrefix = "budget"></Card>
+			 	<Card header= "Key Performers / Budget Breakdown" classPrefix = "budget"></Card>
 			</div>
 		);
 	}

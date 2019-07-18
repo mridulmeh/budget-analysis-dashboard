@@ -81,7 +81,6 @@ class BubbleChart extends React.Component {
 							recurse(node.key, child);
 						});
 					} else {
-						console.log(node, name);
 						classes.push({ packageName: name, className: node.key || node[nameKey], value: node[size] });
 					}
 
