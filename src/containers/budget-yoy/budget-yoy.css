@@ -2,3 +2,12 @@
     height: calc(45% - 2px);
     /* width:calc(50% - 2px); */
 }
+
+.xAxis text{
+    cursor: pointer;
+}
+.tick-selected text{
+    fill: #2e2e88;
+    font-weight: bold;
+    text-decoration: underline;
+}

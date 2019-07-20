@@ -38,17 +38,18 @@ class BudgetSummary extends React.Component {
 			const viewWord = e.name.replace(/ +/g, "");
 			return (
 				<div
+					key = {e.name}
 					onClick = {() => onSelect(viewWord)}
 					className = { viewWord === selected ? 'summary-card-container selected' : 'summary-card-container'}>
 					<Card
 				 header = {e.name}
 				 body = {bodyHtmlMaker(e.values)}
 				 classPrefix = 'budget-summary'
-				 key = {e.name}></Card>
+					></Card>
 				 </div>
 			);
 		});
-		console.log(selected);
+
 		return (
 			<div className = "budget-summary budget-analysis-section">
 				{cardHtml}

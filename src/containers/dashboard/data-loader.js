@@ -19,25 +19,29 @@ export const getBudgetSummaryData = (allData = []) => {
 
 };
 
-export const getBudgetYOYDataData = (view, allData) => {
+export const getBudgetYOYDataData = (allData, view ) => {
 	return allData[view];
 };
 
-export const getBudgetDistData = (view, allData) => {
-	return allData[view];
+export const getBudgetDistData = (allData, view ) => {
+	const {
+		financialView
+	} = view;
+	// procesDataForBubble
+	return allData[financialView];
 };
 
 export const getBudgetBreakdown = (data = [], state) => {
 	const {
 		type,
 		value,
-		year,
+		yearView,
 		deepDiveView,
-		view
+		financialView
 	} = state;
 
-	const sortedData = (data[view] || []).sort((a,b) => {
-		const sortval = +a[`${year} ${value}`] - +b[`${year} ${value}`];
+	const sortedData = (data[financialView] || []).sort((a,b) => {
+		const sortval = +a[`${yearView} ${value}`] - +b[`${yearView} ${value}`];
 		return type === 'top' ? -sortval : sortval;
 	}).filter(e => e[deepDiveView].length > 0 && e[deepDiveView].split(' ')[0] !== 'Total');
 

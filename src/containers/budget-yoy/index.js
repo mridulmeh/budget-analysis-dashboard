@@ -38,6 +38,9 @@ class BudgetYOY extends React.Component {
 			view,
 			dataPresent
 		} = this.state;
+		const {
+			onYearChage
+		} = this.props;
 
 		const currData = mappedData[view];
 		let barData = {};
@@ -51,7 +54,12 @@ class BudgetYOY extends React.Component {
 		return (
 			<div className = "budget-yoy budget-analysis-section">
 				<Card header= "Year on Year"
-					body = {(<BarChart data = {barData} sequence = {sequence}></BarChart>)}
+					body = {(<BarChart
+						events = {{
+							onXAxisClick: onYearChage
+						}}
+						data = {barData}
+						sequence = {sequence}></BarChart>)}
 					classPrefix = "budget">
 				</Card>
 			</div>

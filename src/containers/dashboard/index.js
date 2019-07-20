@@ -16,16 +16,19 @@ class DashboardContainer extends React.Component {
 			dataPresent: false,
 			views: {
 				budgetYoy: 'BudgetSummaryStatement',
-				budgetDist: 'CapitalExpenditure',
+				budgetDist: {
+					financialView: 'CapitalExpenditure',
+					yearView: '2013-14'
+				},
 				budgetBreakdown: {
 					type: 'top',
 					value: 'Actuals',
-					year: '2013-14',
+					yearView: '2013-14',
 					deepDiveView: 'Detailed Account Code Description',
-					view: 'CapitalExpenditure'
+					financialView: 'CapitalExpenditure'
 				},
 				budgetSummary: {
-					selectedView: 'CapitalExpenditure',
+					financialView: 'CapitalExpenditure',
 					deepDiveView: 'BudgetSummaryStatement'
 				}
 
@@ -51,22 +54,48 @@ class DashboardContainer extends React.Component {
 
 	}
 
-	changeFinancialMetric (metricChosen) {
-		this.setState ({
-			views: {
-				budgetDist: metricChosen,
-				budgetBreakdown: {
-					type: 'top',
-					value: 'Actuals',
-					year: '2013-14',
-					deepDiveView: 'Detailed Account Code Description',
-					view: metricChosen
-				},
-				budgetSummary: {
-					selectedView: metricChosen,
-					deepDiveView: 'BudgetSummaryStatement'
+	changeYearMetric (year) {
+		this.setState ((prevState) => {
+			const {
+				budgetYoy,
+				budgetDist,
+				budgetSummary,
+				budgetBreakdown
+			} = prevState.views;
+
+			budgetBreakdown.yearView = year;
+			budgetDist.yearView = year;
+			return {
+				views: {
+					budgetYoy,
+					budgetDist,
+					budgetSummary,
+					budgetBreakdown
 				}
-			}
+			};
+		});
+	}
+
+	changeFinancialMetric (metricChosen) {
+		this.setState ((prevState) => {
+			const {
+				budgetBreakdown,
+				budgetSummary,
+				budgetYoy,
+				budgetDist
+			} = prevState.views;
+
+			budgetBreakdown.financialView = metricChosen;
+			budgetSummary.financialView = metricChosen;
+			budgetDist.financialView = metricChosen;
+			return {
+				views: {
+					budgetYoy,
+					budgetDist,
+					budgetBreakdown,
+					budgetSummary
+				}
+			};
 		});
 	}
 
@@ -85,9 +114,9 @@ class DashboardContainer extends React.Component {
 			budgetSummary
 		} = views;
 
-		const budgetYOYData = getBudgetYOYDataData(budgetYoy, this.data);
+		const budgetYOYData = getBudgetYOYDataData(this.data, budgetYoy);
 
-		const budgetDistData = getBudgetDistData(budgetDist, this.data);
+		const budgetDistData = getBudgetDistData(this.data, budgetDist);
 
 		const budgetSummData = getBudgetSummaryData(this.data[budgetSummary.deepDiveView]);
 
@@ -99,13 +128,20 @@ class DashboardContainer extends React.Component {
 				<BudgetSummary
 					onSelect = {(...params) => this.changeFinancialMetric(...params)}
 					dataset = {budgetSummData}
-					selected = {budgetSummary.selectedView}></BudgetSummary>
+					selected = {budgetSummary.financialView}></BudgetSummary>
 				<div className = "budget-analysis-section-left">
-					<BudgetYOY dataset = {budgetYOYData}></BudgetYOY>
-					<BudgetBreakDown dataset = {budgetBreakdownData} viewSettings = {budgetBreakdown}></BudgetBreakDown>
+					<BudgetYOY
+						onYearChage = {(...params) => this.changeYearMetric(...params)}
+						dataset = {budgetYOYData}></BudgetYOY>
+					<BudgetBreakDown
+					  dataset = {budgetBreakdownData}
+					  viewSettings = {budgetBreakdown}
+					  ></BudgetBreakDown>
 				</div>
 
-				<BudgetDistribution dataset = {budgetDistData}></BudgetDistribution>
+				<BudgetDistribution
+				  viewSettings = {budgetDist}
+					dataset = {budgetDistData}></BudgetDistribution>
 
 			</div>
 		);

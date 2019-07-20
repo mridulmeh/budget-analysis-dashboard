@@ -6,3 +6,22 @@
 .budget-distribution text{
     font-size: 10px;
 }
+
+.budget-dist-selectors, .budget-dist-bubble-chart, .budget-dist-footer{
+    width: 100%;
+}
+
+.budget-distribution-body{
+    height: 100%;
+}
+
+.budget-dist-selectors{
+    height: 10%;
+}
+
+.budget-dist-bubble-chart{
+    height: 80%
+} 
+.budget-dist-footer{
+    height: 10%
+}

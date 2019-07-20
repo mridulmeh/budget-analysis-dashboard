@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { makeElement } from '../../utils';
+import { makeElement, getDimensionsFromMountPoint } from '../../utils';
 
 const getDataInfo = (data, sequence) => {
 	let maxVal = 0;
@@ -22,22 +22,6 @@ const getDataInfo = (data, sequence) => {
 		categories,
 		maxVal
 	};
-};
-
-const getDimensionsFromMountPoint = (mountPoint) => {
-	const bBox = mountPoint.getBoundingClientRect();
-	const margin = { top: 20, right: 20, bottom: 30, left: 40 };
-
-	const width = bBox.width - margin.left - margin.right;
-
-	const height = bBox.height - margin.top - margin.bottom;
-
-	return {
-		width,
-		height,
-		margin
-	};
-
 };
 
 const getScales = (width, height) => {
@@ -67,19 +51,21 @@ const getScales = (width, height) => {
 	};
 };
 
-const createBars = (data, mountPoint, x0Scale) => {
-	const rectGroup = makeElement(mountPoint, 'g', Object.keys(data), 'bar');
+const createBars = (data, mountPoint, x0Scale, sequence) => {
+	const rectGroupContainer = makeElement(mountPoint, 'g', Object.keys(data), 'bar-group-container');
 
-	rectGroup.attr("transform", d => "translate(" + x0Scale(d) + ",0)");
+	rectGroupContainer.attr("transform", d => "translate(" + x0Scale(d) + ",0)");
+
+	const rectGroup = makeElement(rectGroupContainer, 'g', d => [d], 'bar-group');
 
 	const rect = makeElement(rectGroup, 'rect', (d) =>
 		Object.keys(data[d]).map(key => ({
 			key: key,
 			value: data[d][key]
 		})
-		));
+		), 'bar');
 
-	return rect;
+	return rect ;
 
 };
 
@@ -110,7 +96,10 @@ const createLegend = (mountPoint, groupNames, width, colorScale) => {
 		.text(d => d);
 };
 
-export const createBarChart = (mountPoint, data, sequence) => {
+export const createBarChart = (mountPoint, data, sequence, events = {}) => {
+	const {
+		onXAxisClick
+	} = events;
 
 	const {
 		categories,
@@ -139,7 +128,7 @@ export const createBarChart = (mountPoint, data, sequence) => {
 	x1.domain(groupNames).rangeRound([0, x0.bandwidth()]);
 	y.domain([0, maxVal]).nice();
 
-	const rect = createBars(data, g, x0);
+	const rect = createBars(data, g, x0, groupNames);
 
 	rect.attr("x", function (d) { return x1(d.key); })
 	  .attr("y", function (d) { return y(d.value); })
@@ -149,11 +138,22 @@ export const createBarChart = (mountPoint, data, sequence) => {
 		})
 		.attr("fill", function (d) { return colorScale(d.key); });
 
-	const xAxis = makeElement(g, 'g', [1], 'x axis');
+	const xAxis = makeElement(g, 'g', [1], 'xAxis');
+	xAxis.classed('x', true);
+	xAxis.classed('axis', true);
 	xAxis.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x0));
 
-	const yAxis = makeElement(g, 'g', [1], 'y axis');
+	const allTicks = d3.selectAll('.x.axis .tick')
+		.on('click', function (...params) {
+			onXAxisClick && onXAxisClick(...params);
+			allTicks.classed('tick-selected', false);
+			d3.select(this).classed('tick-selected', true);
+		});
+
+	const yAxis = makeElement(g, 'g', [1], 'yAxis');
+	yAxis.classed('y', true);
+	yAxis.classed('axis', true);
 	yAxis
 		.call(d3.axisLeft(y).ticks(null, "s"));
 

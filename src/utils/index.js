@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 import BudgetSummaryStatement from './cleaned-data/Budget Summary Statement.csv';
 import CapitalExpenditure from './cleaned-data/Capital Expenditure.csv';
 import CapitalReceipts from './cleaned-data/Capital Receipts.csv';
-import RevenueExpenditure from './cleaned-data/Revenue Receipts.csv';
-import RevenueReceipts from './cleaned-data/Capital Receipts.csv';
+import RevenueExpenditure from './cleaned-data/Revenue Expenditure.csv';
+import RevenueReceipts from './cleaned-data/Revenue Receipts.csv';
 
 const datasets = [{
 	name: 'BudgetSummaryStatement',
@@ -149,4 +149,20 @@ export const makeElement = (parent, elemType, data, selector, callbacks = {}, ke
 		exitSel.remove();
 	}
 	return mergeSel;
+};
+
+export const getDimensionsFromMountPoint = (mountPoint) => {
+	const bBox = mountPoint.getBoundingClientRect();
+	const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+	const width = bBox.width - margin.left - margin.right;
+
+	const height = bBox.height - margin.top - margin.bottom;
+
+	return {
+		width,
+		height,
+		margin
+	};
+
 };
