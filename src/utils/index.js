@@ -56,7 +56,7 @@ export const separateDataKeys = (data) => {
 };
 
 export const numberToMoney = (originalString, breakPointer = 2) => {
-	const splitString = originalString.split('.');
+	const splitString = `${originalString}`.split('.');
 	const str = splitString[0];
 
 	const stringLength = str.length;
@@ -66,7 +66,15 @@ export const numberToMoney = (originalString, breakPointer = 2) => {
 	for(let i = stringLength - 4; i >= 0; i = i - breakPointer){
 		returnedStr = (str[i - 1] || '') + str[i] + ',' + returnedStr;
 	}
-	console.log(returnedStr, splitString);
 	return returnedStr + (splitString[1] ? `.${splitString[1]}` : '');
 
+};
+
+export const toTitleCase = (str) => {
+	return str.replace(
+		/\w\S*/g,
+		function (txt) {
+			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		}
+	);
 };

@@ -4,9 +4,9 @@ import './budget-container.css';
 import BudgetSummary from '../budget-summary';
 import BudgetYOY from '../budget-yoy';
 import BudgetDistribution from '../budget-dist';
-import TopBottom from '../top-bottom';
+import BudgetBreakDown from '../break-down';
 import Header from '../header';
-import { getBudgetYOYDataData, getBudgetDistData, getBudgetSummaryData } from './data-loader';
+import { getBudgetYOYDataData, getBudgetDistData, getBudgetSummaryData, getBudgetBreakdown } from './data-loader';
 
 class DashboardContainer extends React.Component {
 	constructor () {
@@ -17,7 +17,12 @@ class DashboardContainer extends React.Component {
 			views: {
 				budgetYoy: 'BudgetSummaryStatement',
 				budgetDist: 'CapitalExpenditure',
-				budgetBreakdown: ''
+				budgetBreakdown: {
+					type: 'top',
+					value: 'Actuals',
+					year: '2013-14',
+					key: 'Detailed Account Code Description'
+				}
 
 			}
 
@@ -49,12 +54,19 @@ class DashboardContainer extends React.Component {
 		const {
 			views
 		} = this.state;
+		const {
+			budgetYoy,
+			budgetDist,
+			budgetBreakdown
+		} = views;
 
-		const budgetYOYData = getBudgetYOYDataData(views.budgetYoy, this.data);
+		const budgetYOYData = getBudgetYOYDataData(budgetYoy, this.data);
 
-		const budgetDistData = getBudgetDistData(views.budgetDist, this.data);
+		const budgetDistData = getBudgetDistData(budgetDist, this.data);
 
 		const budgetSummData = getBudgetSummaryData(this.data['BudgetSummaryStatement']);
+		console.log(this.data);
+		const budgetBreakdownData = getBudgetBreakdown(this.data['CapitalExpenditure'], budgetBreakdown);
 
 		return (
 			<div className = "budget-analysis-container">
@@ -62,7 +74,7 @@ class DashboardContainer extends React.Component {
 				<BudgetSummary dataset = {budgetSummData}></BudgetSummary>
 				<div className = "budget-analysis-section-left">
 					<BudgetYOY dataset = {budgetYOYData}></BudgetYOY>
-					<TopBottom></TopBottom>
+					<BudgetBreakDown dataset = {budgetBreakdownData} viewSettings = {budgetBreakdown}></BudgetBreakDown>
 				</div>
 
 				<BudgetDistribution dataset = {budgetDistData}></BudgetDistribution>

@@ -1,7 +1,5 @@
 import { separateDataKeys } from "../../utils";
 
-const required = ['Capital Expenditure','Revenue Expenditure','Revenue Receipts','Capital Receipts'];
-
 export const getBudgetSummaryData = (allData = []) => {
 	const data = {
 		'Capital Expenditure': {},
@@ -27,4 +25,20 @@ export const getBudgetYOYDataData = (view, allData) => {
 
 export const getBudgetDistData = (view, allData) => {
 	return allData[view];
+};
+
+export const getBudgetBreakdown = (data = [], state) => {
+	const {
+		type,
+		value,
+		year,
+		key
+	} = state;
+
+	const sortedData = data.sort((a,b) => {
+		const sortval = +a[`${year} ${value}`] - +b[`${year} ${value}`];
+		return type === 'top' ? -sortval : sortval;
+	}).filter(e => e[key].length > 0 && e[key].split(' ')[0] !== 'Total');
+
+	return sortedData.slice(0, 10) ;
 };

@@ -38,7 +38,7 @@ class BubbleChart extends React.Component {
 
 			var diameter = Math.min(width, height);
 			var format = d3.format(",d");
-			var color = d3.scaleOrdinal(d3.schemeAccent);
+			var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 			var bubble = d3.pack()
 				.size([diameter, diameter])

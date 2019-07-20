@@ -83,7 +83,7 @@ class BarChart extends React.Component {
 				.rangeRound([height, 0]);
 
 			var z = d3.scaleOrdinal()
-				.range(["blue", "green", "red"]);
+				.range(d3.schemeCategory10);
 
 			x0.domain(categoriesNames);
 			x1.domain(actualGroupNames).rangeRound([0, x0.bandwidth()]);
