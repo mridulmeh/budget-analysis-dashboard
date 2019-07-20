@@ -78,3 +78,6 @@ export const toTitleCase = (str) => {
 		}
 	);
 };
+
+export const camelCaseToWords = (camelCasedWord) => camelCasedWord.replace(/([A-Z])/g, ' $1')
+	.replace(/^./, (str) => str.toUpperCase());

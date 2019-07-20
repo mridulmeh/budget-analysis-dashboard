@@ -7,7 +7,9 @@ class BudgetSummary extends React.Component {
 
 	render () {
 		const {
-			dataset
+			dataset,
+			selected,
+			onSelect
 		} = this.props;
 		let data = [];
 
@@ -33,15 +35,20 @@ class BudgetSummary extends React.Component {
 		const bodyHtmlMaker = (datapoints) => Object.entries(datapoints).map(e => bodyHtml(e));
 
 		const cardHtml = data.map(e => {
+			const viewWord = e.name.replace(/ +/g, "");
 			return (
-				<Card
+				<div
+					onClick = {() => onSelect(viewWord)}
+					className = { viewWord === selected ? 'summary-card-container selected' : 'summary-card-container'}>
+					<Card
 				 header = {e.name}
 				 body = {bodyHtmlMaker(e.values)}
 				 classPrefix = 'budget-summary'
 				 key = {e.name}></Card>
+				 </div>
 			);
 		});
-
+		console.log(selected);
 		return (
 			<div className = "budget-summary budget-analysis-section">
 				{cardHtml}

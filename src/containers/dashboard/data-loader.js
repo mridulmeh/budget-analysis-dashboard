@@ -14,7 +14,7 @@ export const getBudgetSummaryData = (allData = []) => {
 	});
 
 	return Object.keys(data).map(e => {
-		return { name: [e], values: separateDataKeys(data[e]) };
+		return { name: e, values: separateDataKeys(data[e]) };
 	});
 
 };
@@ -32,13 +32,14 @@ export const getBudgetBreakdown = (data = [], state) => {
 		type,
 		value,
 		year,
-		key
+		deepDiveView,
+		view
 	} = state;
 
-	const sortedData = data.sort((a,b) => {
+	const sortedData = (data[view] || []).sort((a,b) => {
 		const sortval = +a[`${year} ${value}`] - +b[`${year} ${value}`];
 		return type === 'top' ? -sortval : sortval;
-	}).filter(e => e[key].length > 0 && e[key].split(' ')[0] !== 'Total');
+	}).filter(e => e[deepDiveView].length > 0 && e[deepDiveView].split(' ')[0] !== 'Total');
 
 	return sortedData.slice(0, 10) ;
 };

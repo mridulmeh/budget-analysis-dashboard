@@ -28,3 +28,15 @@
 .summary-section:nth-child(3){
     border-right: 0px solid;
 }
+
+.budget-summary .selected .card-section-header{
+    background: #2e2e88 !important;
+}
+
+.budget-summary .selected .card-section.budget-summary-card-section {
+    border: 1px solid #2e2e88;
+    box-shadow: 1px 1px 1px 1px #2e2e88;
+}
+.summary-card-container {
+    cursor: pointer;
+}

@@ -21,7 +21,12 @@ class DashboardContainer extends React.Component {
 					type: 'top',
 					value: 'Actuals',
 					year: '2013-14',
-					key: 'Detailed Account Code Description'
+					deepDiveView: 'Detailed Account Code Description',
+					view: 'CapitalExpenditure'
+				},
+				budgetSummary: {
+					selectedView: 'CapitalExpenditure',
+					deepDiveView: 'BudgetSummaryStatement'
 				}
 
 			}
@@ -46,6 +51,25 @@ class DashboardContainer extends React.Component {
 
 	}
 
+	changeFinancialMetric (metricChosen) {
+		this.setState ({
+			views: {
+				budgetDist: metricChosen,
+				budgetBreakdown: {
+					type: 'top',
+					value: 'Actuals',
+					year: '2013-14',
+					deepDiveView: 'Detailed Account Code Description',
+					view: metricChosen
+				},
+				budgetSummary: {
+					selectedView: metricChosen,
+					deepDiveView: 'BudgetSummaryStatement'
+				}
+			}
+		});
+	}
+
 	componentDidMount () {
 		this.loadData();
 	}
@@ -57,21 +81,25 @@ class DashboardContainer extends React.Component {
 		const {
 			budgetYoy,
 			budgetDist,
-			budgetBreakdown
+			budgetBreakdown,
+			budgetSummary
 		} = views;
 
 		const budgetYOYData = getBudgetYOYDataData(budgetYoy, this.data);
 
 		const budgetDistData = getBudgetDistData(budgetDist, this.data);
 
-		const budgetSummData = getBudgetSummaryData(this.data['BudgetSummaryStatement']);
-		console.log(this.data);
-		const budgetBreakdownData = getBudgetBreakdown(this.data['CapitalExpenditure'], budgetBreakdown);
+		const budgetSummData = getBudgetSummaryData(this.data[budgetSummary.deepDiveView]);
+
+		const budgetBreakdownData = getBudgetBreakdown(this.data, budgetBreakdown);
 
 		return (
 			<div className = "budget-analysis-container">
 				<Header></Header>
-				<BudgetSummary dataset = {budgetSummData}></BudgetSummary>
+				<BudgetSummary
+					onSelect = {(...params) => this.changeFinancialMetric(...params)}
+					dataset = {budgetSummData}
+					selected = {budgetSummary.selectedView}></BudgetSummary>
 				<div className = "budget-analysis-section-left">
 					<BudgetYOY dataset = {budgetYOYData}></BudgetYOY>
 					<BudgetBreakDown dataset = {budgetBreakdownData} viewSettings = {budgetBreakdown}></BudgetBreakDown>
