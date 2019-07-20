@@ -1,37 +1,21 @@
 import React from 'react';
 import './budget-dist.css';
 import { BubbleChart, Card } from '../../components';
-
-const applyGrouping = (hashMap, fn, nameKey, size) => {
-	const groupedData = [];
-
-	Object.keys(hashMap).forEach(key => {
-		if(key.length){
-			groupedData.push({
-				key,
-				values: [{
-					[nameKey]: key,
-					[size]: fn(hashMap[key])
-				}]
-			});
-		}
-	});
-	return groupedData;
-};
-
-const procesDataForBubble = (data, nameKey, size, groupFn = (d) => d[0]) => {
-	const dataHashMap = {};
-	data.forEach(e => {
-		if(!dataHashMap[e[nameKey]]){
-			dataHashMap[e[nameKey]] = [];
-		}
-		dataHashMap[e[nameKey]].push(e[size]);
-	});
-
-	return applyGrouping(dataHashMap, groupFn, nameKey, size);
-};
+import { procesDataForBubble, groupFnMap } from './helper';
 
 class BudgetDistribution extends React.Component {
+	constructor (){
+		super();
+		this.state = {
+			groupFn: "Sum"
+		};
+	}
+
+	changeGrouping (fnName) {
+		this.setState({
+			groupFn: fnName
+		});
+	}
 
 	render () {
 		const {
@@ -41,15 +25,25 @@ class BudgetDistribution extends React.Component {
 		const {
 			yearView
 		} = viewSettings;
+		const {
+			groupFn
+		} = this.state;
 
 		const size = `${yearView} Revised Estimates`;
 		const name = 'Function';
 
 		let nestedData = [];
+
 		if(dataset){
-			const processedData = procesDataForBubble(dataset, name, size);
+			const processedData = procesDataForBubble(dataset, name, size, groupFn);
 			nestedData = { key: 'data', values: processedData };
 		}
+
+		const groupFnOptions = Object.keys(groupFnMap).map(val => {
+			return (
+				<option key = {val} value = {val}>{val}</option>
+			);
+		});
 
 		return (
 			<div className = "budget-distribution budget-analysis-section">
@@ -57,8 +51,10 @@ class BudgetDistribution extends React.Component {
 				<Card header= "Budget Distribution" body = {
 					(<div className = "budget-distribution-body">
 						<div className = "budget-dist-selectors">
-							<select>
-								<option value = "sum"></option>
+							<select
+								value = {groupFn}
+								onChange = {(e) => this.changeGrouping(e.target.value)}>
+								{groupFnOptions}
 							</select>
 						</div>
 						<div className = "budget-dist-bubble-chart">
