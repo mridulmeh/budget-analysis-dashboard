@@ -81,3 +81,72 @@ export const toTitleCase = (str) => {
 
 export const camelCaseToWords = (camelCasedWord) => camelCasedWord.replace(/([A-Z])/g, ' $1')
 	.replace(/^./, (str) => str.toUpperCase());
+
+/**
+ * This function takes a raw DOM element or
+ * a string and returns a d3 selection of that element.
+ *
+ * @param {HTMLElement | string} element The element to wrap in d3 selection.
+ * @return {Selection} Instance of d3 selection.
+ */
+export const selectElement = element => d3.select(element);
+
+export const selectAllElements = element => d3.selectAll(element);
+
+export const makeElement = (parent, elemType, data, selector, callbacks = {}, keyFn) => {
+	if ((parent instanceof HTMLElement || parent instanceof SVGElement)) {
+		parent = selectElement(parent);
+	}
+
+	const selectorVal = selector ? selector[0] : null;
+	let selectorType = null;
+	let actualSelector = null;
+	let element = null;
+	let enterSel = null;
+	let mergeSel = null;
+	let filter;
+	if (selectorVal) {
+		if (selectorVal === '#') {
+			selectorType = 'id';
+			actualSelector = selector;
+		} else {
+			selectorType = 'class';
+			actualSelector = selector[0] === '.' ? selector : `.${selector}`;
+		}
+	} else {
+		actualSelector = elemType;
+		filter = true;
+	}
+	element = parent.selectAll(actualSelector);
+
+	filter && (element = element.filter(function () {
+		return this.parentNode === parent.node();
+	}));
+	element = element.data(data, keyFn);
+
+	enterSel = element.enter()
+		.append(elemType || 'div');
+	callbacks.enter && enterSel.each(function (...params) {
+		callbacks.enter(selectElement(this), ...params);
+	});
+
+	mergeSel = enterSel.merge(element);
+	callbacks.update && mergeSel.each(function (...params) {
+		callbacks.update(selectElement(this), ...params);
+	});
+	if (selectorType === 'class') {
+		mergeSel.classed(selectorVal === '.' ? selector.substring(1, selector.length) : selector, true);
+	} else if (selectorType === 'id') {
+		mergeSel.attr('id', selector.substring(1, selector.length));
+	}
+	const exitSel = element.exit();
+
+	if (callbacks.exit) {
+		exitSel.each(function (...params) {
+			callbacks.exit(selectElement(this), ...params);
+		});
+	} else {
+		exitSel.remove();
+	}
+	return mergeSel;
+};
