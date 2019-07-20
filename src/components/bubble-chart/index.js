@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBubbleChart } from './helper';
+import './bubble-chart.css';
 
 class BubbleChart extends React.Component {
 
@@ -23,11 +24,12 @@ class BubbleChart extends React.Component {
 		let {
 			data,
 			size,
-			nameKey
+			nameKey,
+			events
 		} = this.props;
 
 		if (data && data.key) {
-			createBubbleChart(this.node, data, size, nameKey);
+			createBubbleChart(this.node, data, size, nameKey, events);
 		}
 	}
 

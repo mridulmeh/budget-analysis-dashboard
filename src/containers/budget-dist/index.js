@@ -2,6 +2,7 @@ import React from 'react';
 import './budget-dist.css';
 import { BubbleChart, Card } from '../../components';
 import { procesDataForBubble, groupFnMap } from './helper';
+import { hierarchy } from '../../enums';
 
 class BudgetDistribution extends React.Component {
 	constructor (){
@@ -18,21 +19,23 @@ class BudgetDistribution extends React.Component {
 	}
 
 	render () {
+		let nestedData = [];
 		const {
 			dataset,
-			viewSettings
+			viewSettings,
+			onDeepDive
 		} = this.props;
 		const {
-			yearView
+			yearView,
+			estimateView,
+			deepDiveView
 		} = viewSettings;
 		const {
 			groupFn
 		} = this.state;
 
-		const size = `${yearView} Revised Estimates`;
-		const name = 'Function';
-
-		let nestedData = [];
+		const size = `${yearView} ${estimateView}`;
+		const name = hierarchy[hierarchy.indexOf(deepDiveView.name) + 1];
 
 		if(dataset){
 			const processedData = procesDataForBubble(dataset, name, size, groupFn);
@@ -44,6 +47,10 @@ class BudgetDistribution extends React.Component {
 				<option key = {val} value = {val}>{val}</option>
 			);
 		});
+
+		const events = {
+			onBubbleClick: onDeepDive
+		};
 
 		return (
 			<div className = "budget-distribution budget-analysis-section">
@@ -58,7 +65,11 @@ class BudgetDistribution extends React.Component {
 							</select>
 						</div>
 						<div className = "budget-dist-bubble-chart">
-							<BubbleChart data = {nestedData} size = {size} nameKey = {name}>
+							<BubbleChart
+								data = {nestedData}
+								size = {size}
+								events = {events}
+								nameKey = {name}>
 
 							</BubbleChart>
 						</div>

@@ -1,4 +1,5 @@
 import { separateDataKeys } from "../../utils";
+import { hierarchy } from "../../enums";
 
 export const getBudgetSummaryData = (allData = []) => {
 	const data = {
@@ -25,10 +26,32 @@ export const getBudgetYOYDataData = (allData, view ) => {
 
 export const getBudgetDistData = (allData, view ) => {
 	const {
-		financialView
+		financialView,
+		deepDiveView
 	} = view;
+	const {
+		value,
+		name
+	} = deepDiveView;
+
 	// procesDataForBubble
-	return allData[financialView];
+	let data = allData[financialView];
+
+	const deepDiveName = hierarchy[hierarchy.indexOf(deepDiveView.name) + 1];
+
+	if(data){
+		data = data.filter(e => {
+			if(!e[deepDiveName]){
+				return true;
+			}
+			 return e[deepDiveName].split(' ')[0] !== 'Total';
+		});
+	}
+	if(value.length){
+		data = data.filter(e => e[name] === value);
+	}
+	console.log(data);
+	return data;
 };
 
 export const getBudgetBreakdown = (data = [], state) => {
@@ -43,7 +66,8 @@ export const getBudgetBreakdown = (data = [], state) => {
 	const sortedData = (data[financialView] || []).sort((a,b) => {
 		const sortval = +a[`${yearView} ${value}`] - +b[`${yearView} ${value}`];
 		return type === 'top' ? -sortval : sortval;
-	}).filter(e => e[deepDiveView].length > 0 && e[deepDiveView].split(' ')[0] !== 'Total');
+	})
+		.filter(e => e[deepDiveView].length > 0 && e[deepDiveView].split(' ')[0] !== 'Total');
 
 	return sortedData.slice(0, 10) ;
 };

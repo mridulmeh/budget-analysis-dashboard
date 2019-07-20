@@ -1,7 +1,7 @@
 export const groupFnMap = {
-	Sum: (arr) => arr.reduce((t,n) => t + n),
-	Maximum: (arr) => arr.reduce((t,n) => Math.max(t,n), Number.NEGATIVE_INFINITY),
-	Minimum: (arr) => arr.reduce((t,n) => Math.min(t,n), Number.POSITIVE_INFINITY)
+	Sum: (arr) => arr.reduce((t,n) => +t + +n),
+	Maximum: (arr) => arr.reduce((t,n) => Math.max(+t,+n), Number.NEGATIVE_INFINITY),
+	Minimum: (arr) => arr.reduce((t,n) => Math.min(+t,+n), Number.POSITIVE_INFINITY)
 };
 
 const applyGrouping = (hashMap, nameKey, size, fn = (d) => d[0]) => {

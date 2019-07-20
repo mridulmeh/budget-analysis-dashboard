@@ -7,6 +7,7 @@ import BudgetDistribution from '../budget-dist';
 import BudgetBreakDown from '../break-down';
 import Header from '../header';
 import { getBudgetYOYDataData, getBudgetDistData, getBudgetSummaryData, getBudgetBreakdown } from './data-loader';
+import { hierarchy } from '../../enums';
 
 class DashboardContainer extends React.Component {
 	constructor () {
@@ -18,7 +19,12 @@ class DashboardContainer extends React.Component {
 				budgetYoy: 'BudgetSummaryStatement',
 				budgetDist: {
 					financialView: 'CapitalExpenditure',
-					yearView: '2013-14'
+					yearView: '2013-14',
+					estimateView: 'Revised Estimates',
+					deepDiveView: {
+						name: 'Summary',
+						value: ''
+					}
 				},
 				budgetBreakdown: {
 					type: 'top',
@@ -51,6 +57,40 @@ class DashboardContainer extends React.Component {
 			});
 
 		});
+
+	}
+
+	changeDeepDiveView (value, addDiff = 1) {
+		const {
+			deepDiveView
+		} = this.state.views.budgetDist;
+		const newHierarchyPos = hierarchy.indexOf(deepDiveView.name) + addDiff;
+		const newHierarchy = hierarchy[newHierarchyPos];
+
+		if(newHierarchyPos < hierarchy.length - 1){
+			this.setState((prevState) => {
+				const {
+					budgetYoy,
+					budgetDist,
+					budgetSummary,
+					budgetBreakdown
+				} = prevState.views;
+
+				budgetDist.deepDiveView = {
+					name: newHierarchy,
+					value
+				};
+
+				return {
+					views: {
+						budgetYoy,
+						budgetDist,
+						budgetSummary,
+						budgetBreakdown
+					}
+				};
+			});
+		}
 
 	}
 
@@ -140,6 +180,7 @@ class DashboardContainer extends React.Component {
 				</div>
 
 				<BudgetDistribution
+					onDeepDive = {(...params) => this.changeDeepDiveView(...params)}
 				  viewSettings = {budgetDist}
 					dataset = {budgetDistData}></BudgetDistribution>
 

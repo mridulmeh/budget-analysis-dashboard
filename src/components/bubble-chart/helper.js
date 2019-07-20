@@ -37,8 +37,12 @@ const getBubbleParams = (width, height) => {
 
 };
 
-export const createBubbleChart = (mountPoint, data, size, nameKey) => {
+export const createBubbleChart = (mountPoint, data, size, nameKey, events) => {
 	const svg = d3.select(mountPoint).attr("class", "bubble");
+
+	const {
+		onBubbleClick
+	} = events;
 
 	const {
 		width,
@@ -70,22 +74,25 @@ export const createBubbleChart = (mountPoint, data, size, nameKey) => {
 		return "translate(" + x + "," + y + ")";
 	});
 
-	const node = makeElement(nodeContainer, 'g', root.children, 'node');
+	const node = makeElement(nodeContainer, 'g', root.children, 'bubble-node');
 
 	node.attr("transform", function (d) {
 		return "translate(" + d.x + "," + d.y + ")";
-	});
+	})
+		.on('click', (d) => {
+			onBubbleClick(d.data.className, 1);
+		});
 
-	makeElement(node, 'title', d => [d], 'title')
+	makeElement(node, 'title', d => [d], 'bubble-title')
 		.text(function (d) { return d.data.className + ": " + format(d.value); });
 
-	makeElement(node, 'circle', d => [d], 'circle')
+	makeElement(node, 'circle', d => [d], 'bubble-circle')
 		.attr("r", function (d) { return d.r; })
 		.style("fill", function (d) {
 			return color(d.data.packageName);
 		});
 
-	makeElement(node, 'text', d => [d], 'text')
+	makeElement(node, 'text', d => [d], 'bubble-text')
 		.attr("dy", ".3em")
 		.style("text-anchor", "middle")
 		.text(function (d) { return d.data.className ? d.data.className.substring(0, d.r / 3) : ''; });
