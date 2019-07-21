@@ -24,7 +24,7 @@ function classes (root, nameKey, size) {
 const getBubbleParams = (width, height) => {
 	const diameter = Math.min(width, height);
 	const format = d3.format(",d");
-	const color = d3.scaleOrdinal(d3.schemeCategory10);
+	const color = d3.scaleOrdinal(d3.schemeSet1);
 
 	const bubble = d3.pack()
 		.size([diameter, diameter])

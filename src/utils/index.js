@@ -24,7 +24,15 @@ const datasets = [{
 
 const csvReader = (resolve, reject, dataset) => {
 	return d3.csv(dataset.data).then((res) => {
-		resolve({ [dataset.name]: res });
+		resolve({
+			[dataset.name]: res.map(datum => {
+				const newObj = {};
+				Object.keys(datum).forEach(e => {
+					newObj[e.trim()] = datum[e];
+				});
+				return newObj;
+			})
+		});
 	});
 };
 
@@ -166,3 +174,5 @@ export const getDimensionsFromMountPoint = (mountPoint) => {
 	};
 
 };
+
+export const removeSpaces = (str) => str.replace(/ +/g, "");

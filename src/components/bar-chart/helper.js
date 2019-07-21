@@ -41,7 +41,7 @@ const getScales = (width, height) => {
 
 	// The scale for colors
 	const colorScale = d3.scaleOrdinal()
-		.range(d3.schemeCategory10);
+		.range(d3.schemeSet1);
 
 	return {
 		x0,
@@ -51,7 +51,7 @@ const getScales = (width, height) => {
 	};
 };
 
-const createBars = (data, mountPoint, x0Scale, sequence) => {
+const createBars = (data, mountPoint, x0Scale, events) => {
 	const rectGroupContainer = makeElement(mountPoint, 'g', Object.keys(data), 'bar-group-container');
 
 	rectGroupContainer.attr("transform", d => "translate(" + x0Scale(d) + ",0)");
@@ -65,11 +65,15 @@ const createBars = (data, mountPoint, x0Scale, sequence) => {
 		})
 		), 'bar');
 
+	rect.on('click',(...params) => {
+		events.onBarClick && events.onBarClick(...params);
+	});
+
 	return rect ;
 
 };
 
-const createLegend = (mountPoint, groupNames, width, colorScale) => {
+const createLegend = (mountPoint, groupNames, width, colorScale, events) => {
 
 	const legendGroupOuter = makeElement(mountPoint, 'g', [1], 'legend-outer');
 
@@ -77,23 +81,28 @@ const createLegend = (mountPoint, groupNames, width, colorScale) => {
 		.attr("font-size", 10)
 		.attr("text-anchor", "end");
 
-	const legendGroup = makeElement(legendGroupOuter, 'g', groupNames.slice().reverse())
+	const legendGroup = makeElement(legendGroupOuter, 'g',
+		groupNames.slice().reverse().map(e => ({ key: e })), 'legend-group')
 		.attr("transform", (d, i) => "translate(0," + i * 20 + ")" );
+
+	legendGroup.on('click',(...params) => {
+		events.onBarClick && events.onBarClick(...params);
+	});
 
 	makeElement(legendGroup, 'rect', d => [d], 'legend-rect')
 
 		.attr("x", width - 17)
 		.attr("width", 15)
 		.attr("height", 15)
-		.attr("fill", colorScale)
-		.attr("stroke", colorScale)
+		.attr("fill", d => colorScale(d.key))
+		.attr("stroke", d => colorScale(d.key))
 		.attr("stroke-width",2);
 
 	makeElement(legendGroup, 'text', d => [d], 'legend-text')
 		.attr("x", width - 24)
 		.attr("y", 9.5)
 		.attr("dy", "0.32em")
-		.text(d => d);
+		.text(d => d.key);
 };
 
 export const createBarChart = (mountPoint, data, sequence, events = {}) => {
@@ -128,7 +137,7 @@ export const createBarChart = (mountPoint, data, sequence, events = {}) => {
 	x1.domain(groupNames).rangeRound([0, x0.bandwidth()]);
 	y.domain([0, maxVal]).nice();
 
-	const rect = createBars(data, g, x0, groupNames);
+	const rect = createBars(data, g, x0, events);
 
 	rect.attr("x", function (d) { return x1(d.key); })
 	  .attr("y", function (d) { return y(d.value); })
@@ -168,6 +177,6 @@ export const createBarChart = (mountPoint, data, sequence, events = {}) => {
 	  .attr("text-anchor", "start")
 		.text("in Lakhs");
 
-	createLegend(g, groupNames, width, colorScale);
+	createLegend(g, groupNames, width, colorScale, events);
 
 };

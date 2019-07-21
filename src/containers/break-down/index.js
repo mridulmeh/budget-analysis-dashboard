@@ -13,19 +13,18 @@ class BudgetBreakdown extends React.Component {
 		} = this.props;
 		const {
 			type,
-			value,
+			estimateView,
 			yearView,
 			deepDiveView,
 			financialView
 		} = viewSettings;
 
-		const mainHeader = `${toTitleCase(type)} 10 ${value} in 
+		const mainHeader = `${toTitleCase(type)} 10 ${estimateView} in 
 			${camelCaseToWords(financialView)} for the year ${yearView}`;
 
 		const body = dataset.map((e,i) => {
-			const numberVal = e[`${yearView} ${value}`];
-
-			const money = numberToMoney(Math.round(numberVal * 100) / 100);
+			const numberVal = e[`${yearView} ${estimateView}`];
+			const money = numberToMoney(Math.round((numberVal || 0) * 100) / 100);
 			return (<div key = {i} className = "break-down-row">
 				<div className = 'break-down-key'>{i + 1}) {e[deepDiveView]} </div>
 				<div className = 'break-down-value'>Rs. {money} L</div>

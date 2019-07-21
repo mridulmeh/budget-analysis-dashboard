@@ -2,6 +2,7 @@ import React from 'react';
 import './budget-summary.css';
 import { Card } from '../../components';
 import { numberToMoney } from '../../utils';
+import { sequence } from '../../enums';
 
 class BudgetSummary extends React.Component {
 
@@ -28,11 +29,12 @@ class BudgetSummary extends React.Component {
 			data.push(obj);
 		});
 
-		const bodyHtml = (datapoint) => (<div className = "summary-section" key = {datapoint[0]}>
-			<div className = "summary-name">{datapoint[0]} </div>
-			<div className = "summary-value">Rs. {numberToMoney(datapoint[1].toFixed(2))}</div>
+		const bodyHtml = (name = '', value = 0) => (<div className = "summary-section" key = {name}>
+			<div className = "summary-name">{name} </div>
+			<div className = "summary-value">Rs. {numberToMoney(value.toFixed(2))} L</div>
 		</div>);
-		const bodyHtmlMaker = (datapoints) => Object.entries(datapoints).map(e => bodyHtml(e));
+
+		const bodyHtmlMaker = (datapoints) => sequence.map(e => bodyHtml(e, datapoints[e]));
 
 		const cardHtml = data.map(e => {
 			const viewWord = e.name.replace(/ +/g, "");
@@ -42,9 +44,9 @@ class BudgetSummary extends React.Component {
 					onClick = {() => onSelect(viewWord)}
 					className = { viewWord === selected ? 'summary-card-container selected' : 'summary-card-container'}>
 					<Card
-				 header = {e.name}
-				 body = {bodyHtmlMaker(e.values)}
-				 classPrefix = 'budget-summary'
+						header = {e.name}
+						body = {bodyHtmlMaker(e.values)}
+						classPrefix = 'budget-summary'
 					></Card>
 				 </div>
 			);

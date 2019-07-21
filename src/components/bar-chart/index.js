@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBarChart } from './helper';
+import './bar.css';
 
 class BarChart extends React.Component {
 

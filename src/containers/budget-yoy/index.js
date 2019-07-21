@@ -2,6 +2,7 @@ import React from 'react';
 import './budget-yoy.css';
 import { BarChart, Card } from '../../components';
 import { separateDataKeys } from '../../utils';
+import { sequence } from '../../enums';
 
 class BudgetYOY extends React.Component {
 	constructor (props) {
@@ -39,7 +40,8 @@ class BudgetYOY extends React.Component {
 			dataPresent
 		} = this.state;
 		const {
-			onYearChage
+			onYearChage,
+			onEstimateChange
 		} = this.props;
 
 		const currData = mappedData[view];
@@ -49,14 +51,13 @@ class BudgetYOY extends React.Component {
 			barData = separateDataKeys(currData);
 		}
 
-		const sequence = ['Budget Estimates', 'Revised Estimates', 'Actuals'];
-
 		return (
 			<div className = "budget-yoy budget-analysis-section">
 				<Card header= "Year on Year"
 					body = {(<BarChart
 						events = {{
-							onXAxisClick: onYearChage
+							onXAxisClick: onYearChage,
+							onBarClick: (datum) => onEstimateChange(datum.key)
 						}}
 						data = {barData}
 						sequence = {sequence}></BarChart>)}

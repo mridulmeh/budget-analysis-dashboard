@@ -25,3 +25,7 @@
 .budget-dist-footer{
     height: 10%
 }
+
+.budget-dist-bubble-chart .bubble-node{
+    cursor: pointer;
+}

@@ -1,21 +1,57 @@
-import { separateDataKeys } from "../../utils";
+import { separateDataKeys, removeSpaces } from "../../utils";
 import { hierarchy } from "../../enums";
 
-export const getBudgetSummaryData = (allData = []) => {
+const addDatumToExistingData = (prevDatum, datum) => {
+	Object.keys(datum).forEach(key => {
+		if(datum[key] && !isNaN(+datum[key])){
+			prevDatum[key] = prevDatum[key] || 0;
+			prevDatum[key] += +datum[key];
+		}
+	});
+
+	return prevDatum;
+};
+
+export const getBudgetSummaryData = (allData = [], view) => {
+	const {
+		name,
+		value
+	} = view.deepDiveView;
 	const data = {
 		'Capital Expenditure': {},
 		'Revenue Expenditure': {},
 		'Revenue Receipts': {},
 		'Capital Receipts': {}
 	};
-	allData.forEach(d => {
-		if(data[d.Particulars]){
-			data[d.Particulars] = d;
-		}
-	});
+
+	switch(name){
+	case 'Summary':
+
+		(allData['BudgetSummaryStatement'] || []).forEach(d => {
+			if(data[d.Particulars]){
+				data[d.Particulars] = d;
+			}
+		});
+		break;
+
+	default: {
+		Object.keys(data).forEach(key => {
+			const dataset = allData[removeSpaces(key)];
+			dataset.forEach(datum => {
+				if(datum[name] === value){
+					data[key] =	addDatumToExistingData(data[key], datum);
+
+				}
+			});
+		});
+	}
+	}
 
 	return Object.keys(data).map(e => {
-		return { name: e, values: separateDataKeys(data[e]) };
+		return {
+			name: e,
+			values: separateDataKeys(data[e])
+		};
 	});
 
 };
@@ -50,7 +86,6 @@ export const getBudgetDistData = (allData, view ) => {
 	if(value.length){
 		data = data.filter(e => e[name] === value);
 	}
-	console.log(data);
 	return data;
 };
 

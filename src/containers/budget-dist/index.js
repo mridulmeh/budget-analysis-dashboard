@@ -2,13 +2,14 @@ import React from 'react';
 import './budget-dist.css';
 import { BubbleChart, Card } from '../../components';
 import { procesDataForBubble, groupFnMap } from './helper';
-import { hierarchy } from '../../enums';
+import { hierarchy, years } from '../../enums';
 
 class BudgetDistribution extends React.Component {
 	constructor (){
 		super();
 		this.state = {
-			groupFn: "Sum"
+			groupFn: "Sum",
+			hierarchy: []
 		};
 	}
 
@@ -34,8 +35,9 @@ class BudgetDistribution extends React.Component {
 			groupFn
 		} = this.state;
 
-		const size = `${yearView} ${estimateView}`;
-		const name = hierarchy[hierarchy.indexOf(deepDiveView.name) + 1];
+		const size = yearView ? [`${yearView} ${estimateView}`] : years.map(year => [`${year} ${estimateView}`]);
+		const hierarchyPos = hierarchy.indexOf(deepDiveView.name) + 1;
+		const name = hierarchyPos === hierarchy.length ? hierarchy[hierarchyPos - 1] : hierarchy[hierarchyPos];
 
 		if(dataset){
 			const processedData = procesDataForBubble(dataset, name, size, groupFn);
@@ -52,6 +54,17 @@ class BudgetDistribution extends React.Component {
 			onBubbleClick: onDeepDive
 		};
 
+		const bubbleChartHtml = (<BubbleChart
+			data = {nestedData}
+			size = {'value'}
+			events = {events}
+			nameKey = {name}>
+		</BubbleChart>);
+
+		const noDataHtml = (<div>Nothing to show here</div>);
+
+		const chartHtml = !nestedData.values.length ? noDataHtml : bubbleChartHtml;
+
 		return (
 			<div className = "budget-distribution budget-analysis-section">
 
@@ -65,15 +78,13 @@ class BudgetDistribution extends React.Component {
 							</select>
 						</div>
 						<div className = "budget-dist-bubble-chart">
-							<BubbleChart
-								data = {nestedData}
-								size = {size}
-								events = {events}
-								nameKey = {name}>
-
-							</BubbleChart>
+							{chartHtml}
 						</div>
 						<div className = "budget-dist-footer">
+
+							Distribution of <b>{estimateView}</b> across
+							<b>{yearView ? ` ${yearView}` : ' all the years '}</b> for  <br/>
+							{deepDiveView.name}: <b>{deepDiveView.value}</b>
 
 						</div>
 					</div>)} classPrefix = 'budget' ></Card>

@@ -19,8 +19,8 @@ class DashboardContainer extends React.Component {
 				budgetYoy: 'BudgetSummaryStatement',
 				budgetDist: {
 					financialView: 'CapitalExpenditure',
-					yearView: '2013-14',
-					estimateView: 'Revised Estimates',
+					yearView: '2012-13',
+					estimateView: 'Actuals',
 					deepDiveView: {
 						name: 'Summary',
 						value: ''
@@ -28,14 +28,18 @@ class DashboardContainer extends React.Component {
 				},
 				budgetBreakdown: {
 					type: 'top',
-					value: 'Actuals',
-					yearView: '2013-14',
+					estimateView: 'Actuals',
+					yearView: '2012-13',
 					deepDiveView: 'Detailed Account Code Description',
 					financialView: 'CapitalExpenditure'
 				},
 				budgetSummary: {
 					financialView: 'CapitalExpenditure',
-					deepDiveView: 'BudgetSummaryStatement'
+					yearView: '2012-13',
+					deepDiveView: {
+						name: 'Summary',
+						value: ''
+					}
 				}
 
 			}
@@ -67,7 +71,7 @@ class DashboardContainer extends React.Component {
 		const newHierarchyPos = hierarchy.indexOf(deepDiveView.name) + addDiff;
 		const newHierarchy = hierarchy[newHierarchyPos];
 
-		if(newHierarchyPos < hierarchy.length - 1){
+		if(newHierarchyPos < hierarchy.length){
 			this.setState((prevState) => {
 				const {
 					budgetYoy,
@@ -77,6 +81,10 @@ class DashboardContainer extends React.Component {
 				} = prevState.views;
 
 				budgetDist.deepDiveView = {
+					name: newHierarchy,
+					value
+				};
+				budgetSummary.deepDiveView = {
 					name: newHierarchy,
 					value
 				};
@@ -92,6 +100,29 @@ class DashboardContainer extends React.Component {
 			});
 		}
 
+	}
+
+	changeEstimateMetric (metricChosen) {
+
+		this.setState ((prevState) => {
+			const {
+				budgetBreakdown,
+				budgetSummary,
+				budgetYoy,
+				budgetDist
+			} = prevState.views;
+
+			budgetBreakdown.estimateView = metricChosen;
+			budgetDist.estimateView = metricChosen;
+			return {
+				views: {
+					budgetYoy,
+					budgetDist,
+					budgetBreakdown,
+					budgetSummary
+				}
+			};
+		});
 	}
 
 	changeYearMetric (year) {
@@ -158,7 +189,7 @@ class DashboardContainer extends React.Component {
 
 		const budgetDistData = getBudgetDistData(this.data, budgetDist);
 
-		const budgetSummData = getBudgetSummaryData(this.data[budgetSummary.deepDiveView]);
+		const budgetSummData = getBudgetSummaryData(this.data, budgetSummary);
 
 		const budgetBreakdownData = getBudgetBreakdown(this.data, budgetBreakdown);
 
@@ -172,6 +203,7 @@ class DashboardContainer extends React.Component {
 				<div className = "budget-analysis-section-left">
 					<BudgetYOY
 						onYearChage = {(...params) => this.changeYearMetric(...params)}
+						onEstimateChange = {(...params) => this.changeEstimateMetric(...params)}
 						dataset = {budgetYOYData}></BudgetYOY>
 					<BudgetBreakDown
 					  dataset = {budgetBreakdownData}
