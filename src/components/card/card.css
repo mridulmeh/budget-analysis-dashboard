@@ -1,0 +1,25 @@
+
+.card-section{
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.card-section-header{
+    font-size: 16px;
+    height: 24px;
+    text-align: center;
+    background: #333;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 0px;
+    font-weight: bold;
+    position: relative;
+}
+.card-section-body{
+    height: calc(100% - 28px);
+    width: 100%;
+    position: relative;
+}

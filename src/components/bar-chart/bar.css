@@ -1,0 +1,8 @@
+.bar, .legend-group{
+    cursor: pointer;
+}
+
+.bar.selected {
+    stroke: black;
+    stroke-width: 2px;
+}

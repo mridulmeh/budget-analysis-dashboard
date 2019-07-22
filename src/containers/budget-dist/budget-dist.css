@@ -1,0 +1,37 @@
+.budget-distribution.budget-analysis-section{
+    width:calc(50% - 2px);
+    height: calc(85% - 2px);
+} 
+
+.budget-distribution text{
+    font-size: 10px;
+}
+
+.budget-dist-selectors, .budget-dist-bubble-chart, .budget-dist-footer{
+    width: 100%;
+}
+
+.budget-distribution-body{
+    height: 100%;
+}
+
+.budget-dist-selectors{
+    height: 10%;
+}
+
+.budget-dist-bubble-chart{
+    height: 80%
+} 
+.budget-dist-footer{
+    height: 10%
+}
+
+.budget-dist-bubble-chart .bubble-node{
+    cursor: pointer;
+}
+
+.budget-dist-guide{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}

@@ -1,0 +1,59 @@
+.budget-summary.budget-analysis-section{
+    height: calc(10% - 2px);
+}
+.budget-summary .budget-summary-card-section {
+    width: calc(25% - 12px);
+    height: calc(100% - 12px);
+    float: left;
+    margin: 5px;
+
+}
+
+.budget-summary-card-section-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.summary-value{
+    font-weight: bold;
+}
+
+.summary-section{
+    width: calc(33% - 2px);
+    border-right: 1px solid;
+}
+
+.summary-section:nth-child(3){
+    border-right: 0px solid;
+}
+
+.budget-summary .selected .card-section-header{
+    background: #2e2e88 !important;
+}
+
+.budget-summary .selected .card-section.budget-summary-card-section {
+    border: 1px solid #2e2e88;
+    box-shadow: 1px 1px 1px 1px #2e2e88;
+}
+.summary-card-container {
+    cursor: pointer;
+}
+@media screen and (max-width: 1500px) {
+    .summary-section {
+      font-size: 12px;
+    }
+  }
+@media screen and (max-width: 1300px) {
+    .summary-section {
+      font-size: 10px;
+    }
+  }
+  
+@media screen and (max-width: 800px) {
+    .summary-section {
+      font-size: 8px;
+    }
+  }
+  

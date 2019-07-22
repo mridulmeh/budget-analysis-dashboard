@@ -1,0 +1,170 @@
+{
+  "name": "budget-analysis-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "d3": "^5.9.7",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --coverage",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "func-names": [
+        "error",
+        "never"
+      ],
+      "indent": [
+        "error",
+        "tab"
+      ],
+      "quote-props": [
+        "error",
+        "as-needed"
+      ],
+      "key-spacing": [
+        "error",
+        {
+          "beforeColon": false
+        }
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "space-infix-ops": [
+        "error",
+        {
+          "int32Hint": false
+        }
+      ],
+      "import/extensions": "off",
+      "import/no-named-default": "off",
+      "space-before-function-paren": [
+        "error",
+        "always"
+      ],
+      "no-multi-spaces": "error",
+      "arrow-spacing": [
+        "error"
+      ],
+      "block-spacing": [
+        "error"
+      ],
+      "no-trailing-spaces": "error",
+      "no-multi-assign": "off",
+      "semi": [
+        "error",
+        "always"
+      ],
+      "max-len": [
+        "error",
+        120
+      ],
+      "one-var": [
+        "error",
+        "never"
+      ],
+      "no-plusplus": "off",
+      "no-continue": "off",
+      "no-unused-expressions": "off",
+      "class-methods-use-this": "off",
+      "import/prefer-default-export": "off",
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          "max": 1,
+          "maxEOF": 1,
+          "maxBOF": 0
+        }
+      ],
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "no-underscore-dangle": 0,
+      "no-mixed-operators": 0,
+      "no-loop-func": "warn",
+      "no-param-reassign": "off",
+      "no-iterator": "off",
+      "guard-for-in": "warn",
+      "no-nested-ternary": "off",
+      "import/no-extraneous-dependencies": "off",
+      "no-cond-assign": "off",
+      "no-restricted-syntax": [
+        "error",
+        "LabeledStatement",
+        "WithStatement"
+      ],
+      "require-jsdoc": [
+        "off",
+        {
+          "require": {
+            "FunctionDeclaration": true,
+            "MethodDefinition": true,
+            "ClassDeclaration": true,
+            "ArrowFunctionExpression": true
+          }
+        }
+      ],
+      "valid-jsdoc": [
+        "warn",
+        {
+          "prefer": {
+            "arg": "param",
+            "argument": "param",
+            "returns": "return",
+            "constructor": "class",
+            "augments": "extends",
+            "const": "constant",
+            "defaultvalue": "default",
+            "desc": "description",
+            "host": "external",
+            "fileoverview": "file",
+            "overview": "file",
+            "emits": "fires",
+            "var": "member",
+            "prop": "property",
+            "exception": "throws"
+          },
+          "preferType": {
+            "Boolean": "boolean",
+            "Null": "null",
+            "Undefined": "undefined",
+            "Number": "number",
+            "String": "string",
+            "Symbol": "symbol",
+            "object": "Object",
+            "array": "Array",
+            "function": "Function"
+          },
+          "requireReturn": false,
+          "matchDescription": ".+"
+        }
+      ]
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0"
+  }
+}
