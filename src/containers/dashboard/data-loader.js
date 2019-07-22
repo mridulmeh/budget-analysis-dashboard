@@ -110,7 +110,7 @@ export const getBudgetBreakdown = (data = [], state) => {
 	// });
 
 	sortedData = sortedData.filter(e => {
-		if(e[deepDiveName].length > 0 && e[deepDiveName].split(' ')[0] !== 'Total'){
+		if(e[deepDiveName] && e[deepDiveName].length > 0 && e[deepDiveName].split(' ')[0] !== 'Total'){
 			if(deepDiveVal && e[name] !== deepDiveVal){
 				return false;
 			} return true;

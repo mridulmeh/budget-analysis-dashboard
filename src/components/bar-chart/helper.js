@@ -51,7 +51,7 @@ const getScales = (width, height) => {
 	};
 };
 
-const createBars = (data, mountPoint, x0Scale, events) => {
+const createBars = (data, mountPoint, x0Scale, events, selectedPoint) => {
 	const rectGroupContainer = makeElement(mountPoint, 'g', Object.keys(data), 'bar-group-container');
 
 	rectGroupContainer.attr("transform", d => "translate(" + x0Scale(d) + ",0)");
@@ -63,12 +63,13 @@ const createBars = (data, mountPoint, x0Scale, events) => {
 			key: key,
 			value: data[d][key]
 		})
-		), 'bar');
+		), 'bar')
+		.classed('selected', (d) => {
+			return	d.key === selectedPoint.bar ? true : false;
+		});
 
 	rect.on('click', function (...params) {
 		events.onBarClick && events.onBarClick(...params);
-		rect.classed('selected', false);
-		d3.select(this).classed('selected', true);
 	});
 
 	return rect ;
@@ -107,7 +108,7 @@ const createLegend = (mountPoint, groupNames, width, colorScale, events) => {
 		.text(d => d.key);
 };
 
-export const createBarChart = (mountPoint, data, sequence, events = {}) => {
+export const createBarChart = (mountPoint, data, sequence, events = {}, selectedPoint) => {
 	const {
 		onXAxisClick
 	} = events;
@@ -139,7 +140,7 @@ export const createBarChart = (mountPoint, data, sequence, events = {}) => {
 	x1.domain(groupNames).rangeRound([0, x0.bandwidth()]);
 	y.domain([0, maxVal]).nice();
 
-	const rect = createBars(data, g, x0, events);
+	const rect = createBars(data, g, x0, events, selectedPoint);
 
 	rect.attr("x", function (d) { return x1(d.key); })
 	  .attr("y", function (d) { return y(d.value); })
@@ -155,11 +156,14 @@ export const createBarChart = (mountPoint, data, sequence, events = {}) => {
 	xAxis.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x0));
 
-	const allTicks = d3.selectAll('.x.axis .tick')
+	d3.selectAll('.x.axis .tick')
+		.classed('tick-selected', (d) => {
+			return 	d === selectedPoint.xAxisTick ? true : false;
+		})
 		.on('click', function (...params) {
 			onXAxisClick && onXAxisClick(...params);
-			allTicks.classed('tick-selected', false);
-			d3.select(this).classed('tick-selected', true);
+			// allTicks.classed('tick-selected', false);
+			// d3.select(this).classed('tick-selected', true);
 		});
 
 	const yAxis = makeElement(g, 'g', [1], 'yAxis');

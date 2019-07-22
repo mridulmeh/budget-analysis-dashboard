@@ -83,6 +83,38 @@ export const numberToMoney = (originalString, breakPointer = 2) => {
 
 };
 
+const isSimpleObject = (obj) => {
+	let token;
+	if (typeof obj === 'object') {
+		if (obj === null) { return false; }
+		token = Object.prototype.toString.call(obj);
+		if (token === '[object Object]') {
+			return (obj.constructor.toString().match(/^function (.*)\(\)/m) || [])[1] === 'Object';
+		}
+	}
+	return false;
+};
+
+/**
+ * Merges the sink object in the source by recursively iterating through the object properties
+ * @param {Object} source Source Object
+ * @param {Object} sink Sink Object
+ * @return {Object} Merged object
+ */
+export const mergeRecursive = (source, sink) => {
+	for (const prop in sink) {
+		if (isSimpleObject(source[prop]) && isSimpleObject(sink[prop])) {
+			mergeRecursive(source[prop], sink[prop]);
+		} else if (sink[prop] instanceof Object && sink[prop].constructor === Object) {
+			source[prop] = {};
+			mergeRecursive(source[prop], sink[prop]);
+		} else {
+			source[prop] = sink[prop];
+		}
+	}
+	return source;
+};
+
 export const toTitleCase = (str) => {
 	return str.replace(
 		/\w\S*/g,

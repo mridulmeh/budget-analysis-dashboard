@@ -27,3 +27,13 @@
     margin-right: 5%;
     width: 40%;
 }
+img.sort {
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    cursor: pointer;
+}
+
+img.sort.inverted{
+    rotate: (180deg);
+}

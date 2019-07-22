@@ -29,3 +29,9 @@
 .budget-dist-bubble-chart .bubble-node{
     cursor: pointer;
 }
+
+.budget-dist-guide{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}

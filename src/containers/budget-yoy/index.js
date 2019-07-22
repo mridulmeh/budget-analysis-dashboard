@@ -40,6 +40,8 @@ class BudgetYOY extends React.Component {
 			dataPresent
 		} = this.state;
 		const {
+			estimateView,
+			yearView,
 			onYearChage,
 			onEstimateChange
 		} = this.props;
@@ -50,11 +52,16 @@ class BudgetYOY extends React.Component {
 		if(dataPresent){
 			barData = separateDataKeys(currData);
 		}
+		console.log(this.props);
 
 		return (
 			<div className = "budget-yoy budget-analysis-section">
 				<Card header= "Year on Year"
 					body = {(<BarChart
+						selectedPoint = {{
+							bar: estimateView,
+							xAxisTick: yearView
+						}}
 						events = {{
 							onXAxisClick: onYearChage,
 							onBarClick: (datum) => onEstimateChange(datum.key)
