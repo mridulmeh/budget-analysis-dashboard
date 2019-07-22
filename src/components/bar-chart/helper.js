@@ -108,7 +108,7 @@ const createLegend = (mountPoint, groupNames, width, colorScale, events) => {
 		.text(d => d.key);
 };
 
-export const createBarChart = (mountPoint, data, sequence, events = {}, selectedPoint) => {
+export const createBarChart = (mountPoint, data, sequence, events = {}, selectedPoint = {}) => {
 	const {
 		onXAxisClick
 	} = events;
@@ -161,9 +161,8 @@ export const createBarChart = (mountPoint, data, sequence, events = {}, selected
 			return 	d === selectedPoint.xAxisTick ? true : false;
 		})
 		.on('click', function (...params) {
+			console.log('here');
 			onXAxisClick && onXAxisClick(...params);
-			// allTicks.classed('tick-selected', false);
-			// d3.select(this).classed('tick-selected', true);
 		});
 
 	const yAxis = makeElement(g, 'g', [1], 'yAxis');

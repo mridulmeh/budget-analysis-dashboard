@@ -34,6 +34,7 @@ class BudgetYOY extends React.Component {
 	}
 
 	render () {
+		let barData = {};
 		const {
 			mappedData,
 			view,
@@ -47,12 +48,10 @@ class BudgetYOY extends React.Component {
 		} = this.props;
 
 		const currData = mappedData[view];
-		let barData = {};
 
 		if(dataPresent){
 			barData = separateDataKeys(currData);
 		}
-		console.log(this.props);
 
 		return (
 			<div className = "budget-yoy budget-analysis-section">

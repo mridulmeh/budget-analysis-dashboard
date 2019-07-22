@@ -27,7 +27,7 @@ class BarChart extends React.Component {
 			selectedPoint
 		} = this.props;
 
-		if(Object.keys(data).length){
+		if(data && Object.keys(data).length){
 			createBarChart(this.node, data, sequence, events, selectedPoint);
 		}
 	}
