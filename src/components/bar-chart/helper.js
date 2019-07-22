@@ -146,13 +146,12 @@ export const createBarChart = (mountPoint, data, sequence, events = {}, selected
 	rect = rect.attr("x", function (d) { return x1(d.key); })
 		.attr("width", x1.bandwidth());
 
-		  if(!rect.attr('y')){
+	if (!rect.attr('y')) {
 		rect = rect.attr("y", function (d) {
 			return height;
-		})
-			.attr("height", function (d) {
-				return 0;
-		  });
+		}).attr("height", function (d) {
+			return 0;
+		});
 	}
 
 	rect.transition()
