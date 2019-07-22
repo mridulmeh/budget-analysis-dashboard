@@ -141,16 +141,29 @@ export const createBarChart = (mountPoint, data, sequence, events = {}, selected
 	x1.domain(groupNames).rangeRound([0, x0.bandwidth()]);
 	y.domain([0, maxVal]).nice();
 
-	const rect = createBars(data, g, x0, events, selectedPoint);
+	let rect = createBars(data, g, x0, events, selectedPoint);
 
-	rect.attr("x", function (d) { return x1(d.key); })
+	rect = rect.attr("x", function (d) { return x1(d.key); })
+		.attr("width", x1.bandwidth());
+
+		  if(!rect.attr('y')){
+		rect = rect.attr("y", function (d) {
+			return height;
+		})
+			.attr("height", function (d) {
+				return 0;
+		  });
+	}
+
+	rect.transition()
+	  .duration(350)
+	  .attr("height", function (d) {
+			return height - y(d.value);
+		})
 	  .attr("y", function (d) {
 		   return y(+d.value);
 		 })
-	  .attr("width", x1.bandwidth())
-	  .attr("height", function (d) {
-		  return height - y(d.value);
-		})
+
 		.attr("fill", function (d) { return colorScale(d.key); });
 
 	const xAxis = makeElement(g, 'g', [1], 'xAxis');

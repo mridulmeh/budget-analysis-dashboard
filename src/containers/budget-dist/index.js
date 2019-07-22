@@ -11,6 +11,7 @@ class BudgetDistribution extends React.Component {
 			groupFn: "Sum",
 			hierarchy: []
 		};
+		this.history = {};
 	}
 
 	changeGrouping (fnName) {
@@ -34,6 +35,8 @@ class BudgetDistribution extends React.Component {
 		const {
 			groupFn
 		} = this.state;
+
+		this.history[deepDiveView.name] = deepDiveView.value;
 
 		const size = yearView ? [`${yearView} ${estimateView}`] : years.map(year => [`${year} ${estimateView}`]);
 		const hierarchyPos = hierarchy.indexOf(deepDiveView.name) + 1;

@@ -27,7 +27,7 @@ class BudgetBreakdown extends React.Component {
 
 		const mainHeader = (<div>
 			<div>
-				{`${toTitleCase(type)} 10 ${estimateView} in
+				{`${toTitleCase(type)} ${Math.min(dataset.length, 10)} ${estimateView} in
 			${camelCaseToWords(financialView)} for 
 			${yearView ? `the year ${yearView}` : `across all the years` }`}</div>
 			<img
