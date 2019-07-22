@@ -23,6 +23,7 @@ const applyGrouping = (hashMap, nameKey, size, fn = (d) => d[0]) => {
 
 export const procesDataForBubble = (data, nameKey, size, groupFnName) => {
 	const dataHashMap = {};
+	let hasDataFlag = 0;
 	data.forEach(datum => {
 		if(!dataHashMap[datum[nameKey]]){
 			dataHashMap[datum[nameKey]] = [];
@@ -31,8 +32,14 @@ export const procesDataForBubble = (data, nameKey, size, groupFnName) => {
 			t += (+datum[n] || 0);
 			return t;
 		}, 0);
+		if(reducedSize > 0){
+			hasDataFlag = 1;
+		}
 		dataHashMap[datum[nameKey]].push(reducedSize);
 	});
 
-	return applyGrouping(dataHashMap, nameKey, size, groupFnMap[groupFnName]);
+	return {
+		data: applyGrouping(dataHashMap, nameKey, size, groupFnMap[groupFnName]),
+		hasDataFlag
+	};
 };

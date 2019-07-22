@@ -54,7 +54,7 @@ class BudgetBreakdown extends React.Component {
 		}).sort((a,b) => {
 			const diff = a.money - b.money;
 			return type === 'top' ? -diff : diff;
-		}).map((datum, i) => {
+		}).slice(0, 10).map((datum, i) => {
 			const money = numberToMoney(datum.money.toFixed(2));
 			return (<div key = {i} className = "break-down-row">
 				<div className = 'break-down-key' title = {datum[name]}>{i + 1}) {datum[name]} </div>

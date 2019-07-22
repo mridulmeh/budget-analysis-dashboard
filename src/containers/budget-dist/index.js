@@ -39,9 +39,10 @@ class BudgetDistribution extends React.Component {
 		const hierarchyPos = hierarchy.indexOf(deepDiveView.name) + 1;
 		const name = hierarchyPos === hierarchy.length ? hierarchy[hierarchyPos - 1] : hierarchy[hierarchyPos];
 
+		debugger;
 		if(dataset){
-			const processedData = procesDataForBubble(dataset, name, size, groupFn);
-			nestedData = { key: 'data', values: processedData };
+			const { data: processedData, hasDataFlag } = procesDataForBubble(dataset, name, size, groupFn);
+			nestedData = hasDataFlag === 0 ? { values: [] } : { key: 'data', values: processedData };
 		}
 
 		const groupFnOptions = Object.keys(groupFnMap).map(val => {
@@ -98,7 +99,7 @@ class BudgetDistribution extends React.Component {
 								{historyHtml(deepDiveView)}
 							</div>
 							<div className = "budget-dist-guide">
-								<i><b>Note: </b>Click anywhere in the charts/summaries to change view</i>
+								<i><b>Note: </b>Click anywhere in the charts/summaries/axis labels to change view</i>
 							</div>
 
 						</div>

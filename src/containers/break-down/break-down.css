@@ -32,8 +32,9 @@ img.sort {
     right: 10px;
     top: 2px;
     cursor: pointer;
+    transition: 0.5s;
 }
+img.sort.inverted {
+    transform: rotate(180deg);
 
-img.sort.inverted{
-    rotate: (180deg);
 }

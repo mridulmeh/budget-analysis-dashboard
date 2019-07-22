@@ -161,7 +161,6 @@ export const createBarChart = (mountPoint, data, sequence, events = {}, selected
 			return 	d === selectedPoint.xAxisTick ? true : false;
 		})
 		.on('click', function (...params) {
-			console.log('here');
 			onXAxisClick && onXAxisClick(...params);
 		});
 

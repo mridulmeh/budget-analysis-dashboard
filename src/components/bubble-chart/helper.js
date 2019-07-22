@@ -29,6 +29,7 @@ const getBubbleParams = (width, height) => {
 	const bubble = d3.pack()
 		.size([diameter, diameter])
 		.padding(1.5);
+
 	return {
 		format,
 		color,
@@ -56,7 +57,8 @@ export const createBubbleChart = (mountPoint, data, size, nameKey, events = {}) 
 	} = getBubbleParams(width, height);
 
 	const root = d3.hierarchy(classes(data, nameKey, size))
-		.sum(function (d) { return d.value; })
+		.sum(function (d) {
+			return d.value; })
 		.sort(function (a, b) { return b.value - a.value; });
 
 	bubble(root);
@@ -76,18 +78,23 @@ export const createBubbleChart = (mountPoint, data, size, nameKey, events = {}) 
 
 	const node = makeElement(nodeContainer, 'g', root.children, 'bubble-node');
 
-	node.attr("transform", function (d) {
-		return "translate(" + d.x + "," + d.y + ")";
-	})
-		.on('click', (d = {}) => {
-			onBubbleClick(d.data ? d.data.className : '', 1);
+	node
+		.attr("transform", function (d) {
+			return "translate(" + d.x + "," + d.y + ")";
 		});
+	node.on('click', (d = {}) => {
+		onBubbleClick(d.data ? d.data.className : '', 1);
+	});
 
 	makeElement(node, 'title', d => [d], 'bubble-title')
 		.text(function (d) { return d.data.className + ": Rs " + format(d.value) + 'L'; });
 
 	makeElement(node, 'circle', d => [d], 'bubble-circle')
-		.attr("r", function (d) { return d.r; })
+		.transition()
+		.duration(250)
+		.attr("r", function (d) {
+			return d.r;
+		})
 		.style("fill", function (d) {
 			return color(d.data.packageName);
 		});
