@@ -12,11 +12,14 @@
 }
 
 .break-down-key {
-    float: left;
     margin-left: 10%;
     width: 50%;
     display: flex;
     justify-self: start;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .break-down-value {
     float: right;

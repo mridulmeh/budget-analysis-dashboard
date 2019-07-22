@@ -1,5 +1,5 @@
 import { separateDataKeys, removeSpaces } from "../../utils";
-import { hierarchy } from "../../enums";
+import { hierarchy, years } from "../../enums";
 
 const addDatumToExistingData = (prevDatum, datum) => {
 	Object.keys(datum).forEach(key => {
@@ -91,18 +91,50 @@ export const getBudgetDistData = (allData, view ) => {
 
 export const getBudgetBreakdown = (data = [], state) => {
 	const {
-		type,
-		value,
 		yearView,
 		deepDiveView,
+		estimateView,
 		financialView
 	} = state;
+	const {
+		name,
+		value: deepDiveVal
+	} = deepDiveView;
 
-	const sortedData = (data[financialView] || []).sort((a,b) => {
-		const sortval = +a[`${yearView} ${value}`] - +b[`${yearView} ${value}`];
-		return type === 'top' ? -sortval : sortval;
-	})
-		.filter(e => e[deepDiveView].length > 0 && e[deepDiveView].split(' ')[0] !== 'Total');
+	const deepDiveName = hierarchy[hierarchy.indexOf(name) + 1];
 
-	return sortedData.slice(0, 10) ;
+	let sortedData = data[financialView] || [];
+	// (data[financialView] || []).sort((a,b) => {
+	// 	const sortval = +a[`${yearView} ${value}`] - +b[`${yearView} ${value}`];
+	// 	return type === 'top' ? -sortval : sortval;
+	// });
+
+	sortedData = sortedData.filter(e => {
+		if(e[deepDiveName].length > 0 && e[deepDiveName].split(' ')[0] !== 'Total'){
+			if(deepDiveVal && e[name] !== deepDiveVal){
+				return false;
+			} return true;
+
+		} return false;
+	});
+
+	const yearEstimators = yearView ? [`${yearView} ${estimateView}`] : years.map(e => {
+		return `${e} ${estimateView}`;
+	});
+	const reducedData = sortedData.reduce((t = {}, n) => {
+
+		const sepVal = n[deepDiveName];
+		t[sepVal] = t[sepVal] || {};
+		yearEstimators.forEach(y => {
+			t[sepVal][y] = t[sepVal][y] || 0;
+			t[sepVal][y] += +n[y];
+		});
+
+		return t;
+	}, {}) ;
+
+	return Object.keys(reducedData).map(e => ({
+		[deepDiveName]: e,
+		...reducedData[e]
+	})) || [];
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import './break-down.css';
 import { Card } from '../../components';
 import { toTitleCase, numberToMoney, camelCaseToWords } from '../../utils';
+import { hierarchy, years } from '../../enums';
 
 class BudgetBreakdown extends React.Component {
 
@@ -19,14 +20,30 @@ class BudgetBreakdown extends React.Component {
 			financialView
 		} = viewSettings;
 
-		const mainHeader = `${toTitleCase(type)} 10 ${estimateView} in 
-			${camelCaseToWords(financialView)} for the year ${yearView}`;
+		const hierarchyPos = hierarchy.indexOf(deepDiveView.name) + 1;
+		const name = hierarchyPos === hierarchy.length ? hierarchy[hierarchyPos - 1] : hierarchy[hierarchyPos];
 
+		const mainHeader = `${toTitleCase(type)} 10 ${estimateView} in 
+			${camelCaseToWords(financialView)} for ${yearView ? `the year ${yearView}` : `across all the years` }`;
+
+		const yearEstimators = yearView ? [`${yearView} ${estimateView}`] : years.map(e => {
+			return `${e} ${estimateView}`;
+		});
 		const body = dataset.map((e,i) => {
-			const numberVal = e[`${yearView} ${estimateView}`];
-			const money = numberToMoney(Math.round((numberVal || 0) * 100) / 100);
+			let money = 0;
+
+			yearEstimators.forEach(est => {
+				const numberVal = +(e[est]);
+				if(!isNaN(numberVal)){
+
+					money += +(Math.round((+numberVal) * 100) / 100);
+				}
+			});
+
+			money = numberToMoney(money.toFixed(2));
+
 			return (<div key = {i} className = "break-down-row">
-				<div className = 'break-down-key'>{i + 1}) {e[deepDiveView]} </div>
+				<div className = 'break-down-key' title = {e[name]}>{i + 1}) {e[name]} </div>
 				<div className = 'break-down-value'>Rs. {money} L</div>
 			</div>);
 		});

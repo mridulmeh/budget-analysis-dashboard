@@ -19,7 +19,7 @@ class DashboardContainer extends React.Component {
 				budgetYoy: 'BudgetSummaryStatement',
 				budgetDist: {
 					financialView: 'CapitalExpenditure',
-					yearView: '2012-13',
+					yearView: '',
 					estimateView: 'Actuals',
 					deepDiveView: {
 						name: 'Summary',
@@ -29,8 +29,11 @@ class DashboardContainer extends React.Component {
 				budgetBreakdown: {
 					type: 'top',
 					estimateView: 'Actuals',
-					yearView: '2012-13',
-					deepDiveView: 'Detailed Account Code Description',
+					yearView: '',
+					deepDiveView: {
+						name: 'Summary',
+						value: ''
+					},
 					financialView: 'CapitalExpenditure'
 				},
 				budgetSummary: {
@@ -85,6 +88,10 @@ class DashboardContainer extends React.Component {
 					value
 				};
 				budgetSummary.deepDiveView = {
+					name: newHierarchy,
+					value
+				};
+				budgetBreakdown.deepDiveView = {
 					name: newHierarchy,
 					value
 				};

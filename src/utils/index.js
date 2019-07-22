@@ -64,6 +64,11 @@ export const separateDataKeys = (data) => {
 };
 
 export const numberToMoney = (originalString, breakPointer = 2) => {
+	let minus = '';
+	if(originalString[0] === '-'){
+		minus = '-';
+		originalString = originalString.substring(1, originalString.length);
+	}
 	const splitString = `${originalString}`.split('.');
 	const str = splitString[0];
 
@@ -74,7 +79,7 @@ export const numberToMoney = (originalString, breakPointer = 2) => {
 	for(let i = stringLength - 4; i >= 0; i = i - breakPointer){
 		returnedStr = (str[i - 1] || '') + str[i] + ',' + returnedStr;
 	}
-	return returnedStr + (splitString[1] ? `.${splitString[1]}` : '');
+	return minus + returnedStr + (splitString[1] ? `.${splitString[1]}` : '');
 
 };
 

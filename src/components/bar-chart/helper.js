@@ -65,8 +65,10 @@ const createBars = (data, mountPoint, x0Scale, events) => {
 		})
 		), 'bar');
 
-	rect.on('click',(...params) => {
+	rect.on('click', function (...params) {
 		events.onBarClick && events.onBarClick(...params);
+		rect.classed('selected', false);
+		d3.select(this).classed('selected', true);
 	});
 
 	return rect ;
