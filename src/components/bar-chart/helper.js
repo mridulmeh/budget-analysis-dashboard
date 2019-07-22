@@ -58,12 +58,13 @@ const createBars = (data, mountPoint, x0Scale, events, selectedPoint) => {
 
 	const rectGroup = makeElement(rectGroupContainer, 'g', d => [d], 'bar-group');
 
-	const rect = makeElement(rectGroup, 'rect', (d) =>
-		Object.keys(data[d]).map(key => ({
+	const rect = makeElement(rectGroup, 'rect', (d) => {
+
+		return	Object.keys(data[d]).map(key => ({
 			key: key,
-			value: data[d][key]
+			value: +data[d][key]
 		})
-		), 'bar')
+		) ; }, 'bar')
 		.classed('selected', (d) => {
 			return	d.key === selectedPoint.bar ? true : false;
 		});
@@ -143,7 +144,9 @@ export const createBarChart = (mountPoint, data, sequence, events = {}, selected
 	const rect = createBars(data, g, x0, events, selectedPoint);
 
 	rect.attr("x", function (d) { return x1(d.key); })
-	  .attr("y", function (d) { return y(d.value); })
+	  .attr("y", function (d) {
+		   return y(+d.value);
+		 })
 	  .attr("width", x1.bandwidth())
 	  .attr("height", function (d) {
 		  return height - y(d.value);

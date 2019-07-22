@@ -17,7 +17,13 @@ class DashboardContainer extends React.Component {
 		this.state = {
 			dataPresent: false,
 			views: {
-				budgetYoy: 'BudgetSummaryStatement',
+				budgetYoy: {
+					financialView: 'CapitalExpenditure',
+					deepDiveView: {
+						name: 'Summary',
+						value: ''
+					}
+				},
 				budgetDist: {
 					financialView: 'CapitalExpenditure',
 					yearView: '',
@@ -121,6 +127,10 @@ class DashboardContainer extends React.Component {
 					budgetBreakdown
 				} = newView;
 
+				budgetYoy.deepDiveView = {
+					name: newHierarchy,
+					value
+				};
 				budgetDist.deepDiveView = {
 					name: newHierarchy,
 					value
@@ -209,6 +219,7 @@ class DashboardContainer extends React.Component {
 				budgetBreakdown
 			} = newView;
 
+			budgetYoy.financialView = metricChosen;
 			budgetBreakdown.financialView = metricChosen;
 			budgetSummary.financialView = metricChosen;
 			budgetDist.financialView = metricChosen;
@@ -239,7 +250,7 @@ class DashboardContainer extends React.Component {
 			budgetSummary
 		} = views;
 
-		const budgetYOYData = getBudgetYOYDataData(this.data, budgetYoy);
+		const budgetYOYData = getBudgetYOYDataData(this.data, budgetYoy, budgetDist.deepDiveView);
 
 		const budgetDistData = getBudgetDistData(this.data, budgetDist);
 
@@ -259,6 +270,8 @@ class DashboardContainer extends React.Component {
 					selected = {budgetSummary.financialView}></BudgetSummary>
 				<div className = "budget-analysis-section-left">
 					<BudgetYOY
+						view = {budgetYoy}
+						deepDive = {budgetDist.deepDiveView}
 						estimateView = {budgetDist.estimateView}
 						yearView = {budgetDist.yearView}
 						onYearChage = {(...params) => this.changeYearMetric(...params)}

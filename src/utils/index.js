@@ -4,6 +4,7 @@ import CapitalExpenditure from './cleaned-data/Capital Expenditure.csv';
 import CapitalReceipts from './cleaned-data/Capital Receipts.csv';
 import RevenueExpenditure from './cleaned-data/Revenue Expenditure.csv';
 import RevenueReceipts from './cleaned-data/Revenue Receipts.csv';
+import { years } from '../enums';
 
 const datasets = [{
 	name: 'BudgetSummaryStatement',
@@ -54,7 +55,7 @@ export const separateDataKeys = (data) => {
 		const splitKey = key.trim().split(' ');
 		const yearKey = splitKey.shift();
 
-		if(splitKey.length > 0) {
+		if(splitKey.length > 0 && years.indexOf(yearKey) > -1) {
 			const joinedKey = splitKey.join(' ').trim();
 			barData[yearKey] = barData[yearKey] || {};
 			barData[yearKey][joinedKey] = data[key];

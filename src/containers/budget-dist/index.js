@@ -39,7 +39,6 @@ class BudgetDistribution extends React.Component {
 		const hierarchyPos = hierarchy.indexOf(deepDiveView.name) + 1;
 		const name = hierarchyPos === hierarchy.length ? hierarchy[hierarchyPos - 1] : hierarchy[hierarchyPos];
 
-		debugger;
 		if(dataset){
 			const { data: processedData, hasDataFlag } = procesDataForBubble(dataset, name, size, groupFn);
 			nestedData = hasDataFlag === 0 ? { values: [] } : { key: 'data', values: processedData };

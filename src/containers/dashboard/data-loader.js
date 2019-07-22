@@ -1,4 +1,4 @@
-import { separateDataKeys, removeSpaces } from "../../utils";
+import { separateDataKeys, removeSpaces, camelCaseToWords } from "../../utils";
 import { hierarchy, years } from "../../enums";
 
 const addDatumToExistingData = (prevDatum, datum) => {
@@ -56,8 +56,29 @@ export const getBudgetSummaryData = (allData = [], view) => {
 
 };
 
-export const getBudgetYOYDataData = (allData, view ) => {
-	return allData[view];
+export const getBudgetYOYDataData = (allData, view, deepDive) => {
+	const {
+		financialView,
+		deepDiveView
+	} = view;
+
+	if(deepDiveView.value.length){
+		const val = allData[financialView].reduce((t, n) => {
+
+			if(n[deepDiveView.name] === deepDiveView.value){
+				Object.keys(n).forEach(e => {
+					t[e] = t[e] || 0;
+					t[e] += +n[e];
+				});
+			}
+			return t;
+		}, {});
+		val.Particulars = camelCaseToWords(financialView).trim();
+		return [val];
+	} else {
+		return allData['BudgetSummaryStatement'];
+	}
+
 };
 
 export const getBudgetDistData = (allData, view ) => {
